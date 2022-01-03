@@ -55,7 +55,6 @@ public class Events implements Listener {
         HarmonyPlayer player = main.getPlayerList().getPlayer(event.getPlayer());
         if (player == null) return;
         player.destroy();
-        main.getPlayerList().removePlayer(player);
     }
     @EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent event) {
