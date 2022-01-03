@@ -1,0 +1,14 @@
+title: "Awesome Scoreboard"
+lines:
+ - "a%default%a"
+ - "Hello donator &c%player%&f,"
+ - " "
+ - "Online Players: %online%"
+ - "  "
+ - "&byourserver.gg"
+ - "a%default%a"
+conditions:
+ worlds:
+  - world_nether
+  - world_the_end
+ permission: "donator.perm"

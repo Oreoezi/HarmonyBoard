@@ -1,0 +1,8 @@
+test/
+target/
+*.project
+*.prefs
+*.classpath
+.vscode
+.factorypath
+.apt_generated*/

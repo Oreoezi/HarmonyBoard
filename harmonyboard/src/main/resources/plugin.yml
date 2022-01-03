@@ -1,0 +1,23 @@
+main: me.oreoezi.harmonyboard.App
+name: HarmonyScoreboard
+version: ${project.version}
+description: Spigot plugin for creating lightweight async scoreboards using NMS.
+author: Oreoezi
+api-version: 1.16
+softdepend: [PlaceholderAPI]
+commands:
+ harmonyboard:
+  description: Shows the HarmonyBoard commands
+  usage: /<command>
+  aliases: [harboard, hboard]
+permissions:
+ harmonyboard.help:
+  description: Shows all the harmonyboard commands
+  default: op
+ harmonyboard.reload:
+  description: Allows you to reload the config
+  default: op
+ harmonyboard.scoreboard:
+  description: Allows you to change the scoreboard of another player
+ harmonyboard.toggle:
+  description: Allows you to toggle your scoreboard

@@ -1,0 +1,10 @@
+allow_placeholders_in_title: false
+scoreboard_update_rate: 1
+save_scoreboard_preferences: false
+mysql:
+  enable: false
+  host: "127.0.0.1"
+  port: 3306
+  username: "root"
+  password: "password"
+  database: "harmonyboard"
