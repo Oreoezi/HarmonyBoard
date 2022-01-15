@@ -3,6 +3,7 @@ package me.oreoezi.harmonyboard;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.oreoezi.harmonyboard.api.AnimationList;
 import me.oreoezi.harmonyboard.api.PlaceholderList;
 import me.oreoezi.harmonyboard.api.PlayerList;
 import me.oreoezi.harmonyboard.command.CommandManager;
@@ -18,6 +19,7 @@ public class App extends JavaPlugin {
     private CommandManager commandmanager;
     private PlayerList playerlist;
     private PlaceholderList placeholderlist;
+    private AnimationList animationlist;
     private ConfigUtils configutils;
     @Override
     public void onEnable() {
@@ -41,12 +43,16 @@ public class App extends JavaPlugin {
     public void addPlayer(Player player) {
         events.addPlayer(player);
     }
+    public AnimationList getAnimationList() {
+        return animationlist;
+    }
     public void init() {
         if (threadmain != null) threadmain.cancel();
         configs = new Configs(this);
         configutils = new ConfigUtils(configs);
         playerlist = new PlayerList();
         placeholderlist = new PlaceholderList();
+        animationlist = new AnimationList(this);
         commandmanager = new CommandManager(this);
         if (configs.getConfig("config").getBoolean("save_scoreboard_preferences")) {
             //For now the database only saves scoreboard toggles

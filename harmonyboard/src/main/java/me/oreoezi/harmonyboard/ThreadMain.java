@@ -1,38 +1,31 @@
 package me.oreoezi.harmonyboard;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import me.oreoezi.harmonyboard.utils.HarmonyAnimation;
+import me.oreoezi.harmonyboard.api.AnimationList;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
+import net.md_5.bungee.api.ChatColor;
 
 public class ThreadMain extends BukkitRunnable {
     private App main;
-    private ArrayList<HarmonyAnimation> anims;
     private boolean hasPAPI = false;
     private boolean updateTitle = false;
+    private boolean hexSupport = false;
+    private AnimationList anims;
     private int delay;
     public ThreadMain(App main) {
         this.main = main;
-        anims = new ArrayList<HarmonyAnimation>();
+        anims = main.getAnimationList();
         delay = main.getConfigs().getConfig("config").getInt("scoreboard_update_rate");
         updateTitle = main.getConfigs().getConfig("config").getBoolean("allow_placeholders_in_title");
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) hasPAPI = true;
-        for (Object key : main.getConfigs().animations.keySet()) {
-			FileConfiguration an_config = main.getConfigs().animations.get(key);
-			anims.add(new HarmonyAnimation(key.toString(), an_config.getInt("delay"), Arrays.copyOf(an_config.getList("lines").toArray(), an_config.getList("lines").toArray().length, String[].class)));
-		}
+        if (Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]) >= 16) hexSupport = true;
     }
     @Override
 	public void run() {
-        for (int i=0;i<anims.size();i++) {
-            anims.get(i).updateAnimation(delay);
-        }
+        anims.tick(delay);
         for (int i=0;i<main.getPlayerList().size();i++) {
             HarmonyPlayer player = main.getPlayerList().getPlayer(i);
             if (player.shouldRemove()) {
@@ -46,8 +39,8 @@ public class ThreadMain extends BukkitRunnable {
             }
         }
     }
-    private String parseLine(String input, HarmonyPlayer player) {
-		String line = input;
+    private String parseLine(String line, HarmonyPlayer player) {
+        if (hasPAPI) line = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player.getPlayer(), line);
         for (int i=0;i<anims.size();i++) {
             if(!line.contains("a%" + anims.get(i).getName() + "%a")) continue;
             line = line.replaceAll("a%" + anims.get(i).getName() + "%a", anims.get(i).getCurrentFrame());
@@ -56,8 +49,19 @@ public class ThreadMain extends BukkitRunnable {
             if (!line.contains("%"+ main.getPlaceholderList().getPlaceholder(i).getName()+"%")) continue;
             line = line.replaceAll("%"+ main.getPlaceholderList().getPlaceholder(i).getName()+"%", main.getPlaceholderList().getPlaceholder(i).getValue(player));
         }
-        if (hasPAPI) line = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player.getPlayer(), line);
-        line = ChatColor.translateAlternateColorCodes('&', line);
+        line = handleHexColor(line);
 		return line;
 	}
+    private String handleHexColor(String input) {
+        if (hexSupport) {
+            Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+            Matcher matcher = pattern.matcher(input);
+            while (matcher.find()) {
+                String color = input.substring(matcher.start(), matcher.end());
+                input = input.replace(color, ChatColor.of(color) + "");
+                matcher = pattern.matcher(input);
+            }
+        }
+        return ChatColor.translateAlternateColorCodes('&', input);
+    }
 }

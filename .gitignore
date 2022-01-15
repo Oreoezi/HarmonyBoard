@@ -7,3 +7,4 @@ target/
 .factorypath
 .apt_generated*/
 testplugin/
+*.jar

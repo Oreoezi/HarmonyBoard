@@ -23,7 +23,10 @@ public class HarmonyBoardAPI {
             if (main.getConfigs().scoreboards.get(i).getName().equals(name)) return main.getConfigs().scoreboards.get(i);
         return null;
     }
-    public ArrayList<ScoreboardTemplate> getScoreboardList(String name) {
+    public ArrayList<ScoreboardTemplate> getScoreboardList() {
         return main.getConfigs().scoreboards;
+    }
+    public AnimationList getAnimationList() {
+        return main.getAnimationList();
     }
 }
