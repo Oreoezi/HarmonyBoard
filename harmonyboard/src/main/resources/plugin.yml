@@ -3,7 +3,7 @@ name: HarmonyScoreboard
 version: ${project.version}
 description: Spigot plugin for creating lightweight async scoreboards using NMS.
 author: Oreoezi
-api-version: 1.16
+api-version: 1.13
 softdepend: [PlaceholderAPI, Oraxen]
 commands:
  harmonyboard:

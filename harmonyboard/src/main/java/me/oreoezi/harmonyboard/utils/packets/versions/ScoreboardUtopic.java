@@ -1,4 +1,4 @@
-package me.oreoezi.harmonyboard.utils.versions;
+package me.oreoezi.harmonyboard.utils.packets.versions;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
-import me.oreoezi.harmonyboard.utils.PacketUtils;
+import me.oreoezi.harmonyboard.utils.packets.LineParser;
+import me.oreoezi.harmonyboard.utils.packets.ReflectionUtils;
 
 public class ScoreboardUtopic extends HarmonyScoreboard {
 	private Object connection;
@@ -16,20 +17,20 @@ public class ScoreboardUtopic extends HarmonyScoreboard {
 	private Object sb_obj;
     private HarmonyPlayer hplayer;
     private Player player;
-    private Class<?> Packet = PacketUtils.getClass("net.minecraft.network.protocol.Packet");
-    private Class<?> ChatMessage = PacketUtils.getClass("net.minecraft.network.chat.ChatMessage");
-    private Class<?> S3D = PacketUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective");
-    private Class<?> S3B = PacketUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective");
-    private Class<?> S3C = PacketUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardScore");
-    private Class<?> S3E = PacketUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardTeam");
-    private Class<?> Action = PacketUtils.getClass("net.minecraft.server.ScoreboardServer$Action");
-    private Class<?> IScoreboardCriteria = PacketUtils.getClass("net.minecraft.world.scores.criteria.IScoreboardCriteria");
-    private Class<?> EnumScoreboardHealthDisplay = PacketUtils.getClass("net.minecraft.world.scores.criteria.IScoreboardCriteria$EnumScoreboardHealthDisplay");
-    private Class<?> ScoreboardTeam = PacketUtils.getClass("net.minecraft.world.scores.ScoreboardTeam");
-    private Class<?> ScoreboardScore = PacketUtils.getClass("net.minecraft.world.scores.ScoreboardScore");
-    private Class<?> ScoreboardObjective = PacketUtils.getClass("net.minecraft.world.scores.ScoreboardObjective");
-    private Class<?> Scoreboard = PacketUtils.getClass("net.minecraft.world.scores.Scoreboard");
-    private Class<?> IChatBaseComponent = PacketUtils.getClass("net.minecraft.network.chat.IChatBaseComponent");
+    private Class<?> Packet = ReflectionUtils.getClass("net.minecraft.network.protocol.Packet");
+    private Class<?> ChatMessage = ReflectionUtils.getClass("net.minecraft.network.chat.ChatMessage");
+    private Class<?> S3D = ReflectionUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective");
+    private Class<?> S3B = ReflectionUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective");
+    private Class<?> S3C = ReflectionUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardScore");
+    private Class<?> S3E = ReflectionUtils.getClass("net.minecraft.network.protocol.game.PacketPlayOutScoreboardTeam");
+    private Class<?> Action = ReflectionUtils.getClass("net.minecraft.server.ScoreboardServer$Action");
+    private Class<?> IScoreboardCriteria = ReflectionUtils.getClass("net.minecraft.world.scores.criteria.IScoreboardCriteria");
+    private Class<?> EnumScoreboardHealthDisplay = ReflectionUtils.getClass("net.minecraft.world.scores.criteria.IScoreboardCriteria$EnumScoreboardHealthDisplay");
+    private Class<?> ScoreboardTeam = ReflectionUtils.getClass("net.minecraft.world.scores.ScoreboardTeam");
+    private Class<?> ScoreboardScore = ReflectionUtils.getClass("net.minecraft.world.scores.ScoreboardScore");
+    private Class<?> ScoreboardObjective = ReflectionUtils.getClass("net.minecraft.world.scores.ScoreboardObjective");
+    private Class<?> Scoreboard = ReflectionUtils.getClass("net.minecraft.world.scores.Scoreboard");
+    private Class<?> IChatBaseComponent = ReflectionUtils.getClass("net.minecraft.network.chat.IChatBaseComponent");
     private void sendPacket(Object... packets) {
         try {
             for (Object packet : packets) 
@@ -63,7 +64,7 @@ public class ScoreboardUtopic extends HarmonyScoreboard {
         }
     }
     @Override 
-	public void setTitle(String title) {
+	public void setTitleRaw(String title) {
         try {
             Object displayname = ChatMessage.getDeclaredConstructor(String.class).newInstance(ChatColor.translateAlternateColorCodes('&',title));
             sb_obj.getClass().getMethod("setDisplayName", IChatBaseComponent).invoke(sb_obj, displayname);
@@ -83,13 +84,13 @@ public class ScoreboardUtopic extends HarmonyScoreboard {
             Object team = ScoreboardTeam.getDeclaredConstructor(Scoreboard, String.class).newInstance(scoreboard, "line"+pos);
             Object displayname = ChatMessage.getDeclaredConstructor(String.class).newInstance("line"+pos);
             team.getClass().getMethod("setDisplayName", IChatBaseComponent).invoke(team, displayname);
-            Object prefix = ChatMessage.getDeclaredConstructor(String.class).newInstance(PacketUtils.splitLine(text)[0]);
-            Object suffix = ChatMessage.getDeclaredConstructor(String.class).newInstance(PacketUtils.splitLine(text)[1]);
+            Object prefix = ChatMessage.getDeclaredConstructor(String.class).newInstance(LineParser.splitLine(text)[0]);
+            Object suffix = ChatMessage.getDeclaredConstructor(String.class).newInstance(LineParser.splitLine(text)[1]);
             team.getClass().getMethod("setPrefix", IChatBaseComponent).invoke(team, prefix);
             team.getClass().getMethod("setSuffix", IChatBaseComponent).invoke(team, suffix);
             Set<String> nameset = new HashSet<String>();
             nameset.add(txt);
-            team = PacketUtils.setValue(team, "f", nameset);
+            team = ReflectionUtils.setValue(team, "f", nameset);
             Object sbs = ScoreboardScore.getDeclaredConstructor(Scoreboard, ScoreboardObjective, String.class).newInstance(scoreboard, sb_obj, txt);
             sbs.getClass().getMethod("setScore", int.class).invoke(sbs, pos);
             Object s3epacket = S3E.getMethod("a", ScoreboardTeam, boolean.class).invoke(null, team, create);

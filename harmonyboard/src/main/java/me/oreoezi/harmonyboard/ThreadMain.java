@@ -1,18 +1,13 @@
 package me.oreoezi.harmonyboard;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import me.oreoezi.harmonyboard.api.AnimationList;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
-import net.md_5.bungee.api.ChatColor;
 
 public class ThreadMain extends BukkitRunnable {
     private App main;
     private boolean hasPAPI = false;
     private boolean updateTitle = false;
-    private boolean hexSupport = false;
     private AnimationList anims;
     private int delay;
     public ThreadMain(App main) {
@@ -21,7 +16,6 @@ public class ThreadMain extends BukkitRunnable {
         delay = main.getConfigs().getConfig("config").getInt("scoreboard_update_rate");
         updateTitle = main.getConfigs().getConfig("config").getBoolean("allow_placeholders_in_title");
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) hasPAPI = true;
-        if (Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]) >= 16) hexSupport = true;
     }
     @Override
 	public void run() {
@@ -49,19 +43,6 @@ public class ThreadMain extends BukkitRunnable {
             if (!line.contains("%"+ main.getPlaceholderList().getPlaceholder(i).getName()+"%")) continue;
             line = line.replaceAll("%"+ main.getPlaceholderList().getPlaceholder(i).getName()+"%", main.getPlaceholderList().getPlaceholder(i).getValue(player));
         }
-        line = handleHexColor(line);
 		return line;
 	}
-    private String handleHexColor(String input) {
-        if (hexSupport) {
-            Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-            Matcher matcher = pattern.matcher(input);
-            while (matcher.find()) {
-                String color = input.substring(matcher.start(), matcher.end());
-                input = input.replace(color, ChatColor.of(color) + "");
-                matcher = pattern.matcher(input);
-            }
-        }
-        return ChatColor.translateAlternateColorCodes('&', input);
-    }
 }

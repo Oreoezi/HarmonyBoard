@@ -1,21 +1,41 @@
 package me.oreoezi.harmonyboard.utils;
 
-import java.util.HashMap;
-
 public class HarmonyScoreboard {
-    private HashMap<Integer, String> lines;
+    String[] linecache;
+    String titlecache;
+    HarmonyPlayer player;
     public HarmonyScoreboard(HarmonyPlayer player) {
-        lines = new HashMap<Integer, String>();
+        this.player = player;
     }
-    public void setLine(int pos, String text) {
-        setLineRaw(pos, text, lines.get(pos) == null);
-        lines.put(pos, text);
+    public boolean setLine(int pos, String text) {
+        if (linecache == null || linecache.length < pos) {
+            linecache = new String[player.getPreset().length];
+            for (int i=0;i<player.getPreset().length;i++) 
+            {
+                linecache[i] = "";
+            } 
+            return false;    
+        }
+        if (text.equals(linecache[pos-1])) return false;
+        setLineRaw(pos, text, linecache[pos-1].equals(""));
+        linecache[pos-1] = text;
+        return true;
     }
     public void setLineRaw(int pos, String text, boolean create) {
 
     }
-    public void setTitle(String title) {
-    	
+    public boolean setTitle(String title) {
+        if (titlecache == null) {
+            titlecache = "";
+            titlecache = player.getTitle();
+        }
+        if (title.equals(titlecache)) return false;
+        titlecache = title;
+        setTitleRaw(title);
+    	return true;
+    }
+    public void setTitleRaw(String title) {
+
     }
     /**
      * This method should be run before the player is added to the player list.

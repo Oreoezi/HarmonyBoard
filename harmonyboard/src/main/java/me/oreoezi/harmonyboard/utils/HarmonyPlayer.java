@@ -3,7 +3,7 @@ package me.oreoezi.harmonyboard.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import me.oreoezi.harmonyboard.utils.versions.*;
+import me.oreoezi.harmonyboard.utils.packets.versions.*;
 
 public class HarmonyPlayer {
     private Player player;
