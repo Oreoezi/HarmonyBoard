@@ -1,14 +1,9 @@
 package me.oreoezi.harmonyboard.utils.packets.versions;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
 import org.bukkit.entity.Player;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
 import me.oreoezi.harmonyboard.utils.packets.LineParser;
-import me.oreoezi.harmonyboard.utils.packets.ReflectionUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.network.chat.ChatMessage;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective;
