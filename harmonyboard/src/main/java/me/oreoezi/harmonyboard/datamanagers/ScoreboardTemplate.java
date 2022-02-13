@@ -1,31 +1,23 @@
 package me.oreoezi.harmonyboard.datamanagers;
-
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class ScoreboardTemplate {
     private String name;
-    private String permission;
+    private String[] permissions;
     private String[] worlds;
     private String[] preset;
     private String title;
-    public ScoreboardTemplate(String name, FileConfiguration config) {
+    /**
+     * @param name Name of the scoreboard
+     * @param title Scoreboard title
+     * @param lines Scoreboard lines
+     */
+    public ScoreboardTemplate(String name, String title, String[] lines) {
         this.name = name;
-        this.title = config.getString("title");
-        this.preset = config.getList("lines").toArray(new String[0]);
-        if (config.getList("conditions.worlds") != null)
-            worlds = config.getList("conditions.worlds").toArray(new String[0]);
-        else worlds = new String[0];
-        permission = config.getString("conditions.permission");
-    }
-    public String getName() {
-        return this.name;
-    }
-    public String[] getPreset() {
-        return preset;
-    }
-    public String getTitle() {
-        return title;
+        this.title = title;
+        this.preset = lines;
+        this.worlds = new String[0];
+        this.permissions = new String[0];
     }
     /**
      * Checks if the player matches with the scoreboard conditions.
@@ -35,8 +27,14 @@ public class ScoreboardTemplate {
     public boolean isMatching(Player player) {
         if (!hasWorld(player))
             return false;
-        if (permission != null && !player.hasPermission(permission))
+        if (!hasPermissions(player))
             return false;
+        return true;
+    }
+    private boolean hasPermissions(Player player) {
+        for (int i=0;i<permissions.length;i++) {
+            if (!player.hasPermission(permissions[i])) return false;
+        }
         return true;
     }
     private boolean hasWorld(Player player) {
@@ -47,6 +45,21 @@ public class ScoreboardTemplate {
         return false;
     }
     public boolean isDefault() {
-        return worlds.length < 1 && permission == null;
+        return worlds.length < 1 && permissions.length < 1;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public String[] getPreset() {
+        return preset;
+    }
+    public void setPermissions(String[] permissions) {
+        this.permissions = permissions;
+    }
+    public void setWorlds(String[] worlds) {
+        this.worlds = worlds;
     }
 }

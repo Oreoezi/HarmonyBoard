@@ -1,16 +1,16 @@
 package me.oreoezi.harmonyboard.utils.packets.versions;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 import org.bukkit.entity.Player;
-
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
+import me.oreoezi.harmonyboard.utils.packets.LineParser;
+import me.oreoezi.harmonyboard.utils.packets.ReflectionUtils;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import net.minecraft.network.chat.ChatMessage;
-import net.minecraft.network.chat.IChatBaseComponent.ChatSerializer;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardScore;
@@ -53,15 +53,6 @@ public class ScoreboardLmao extends HarmonyScoreboard {
 	    sb_obj.a(new ChatMessage(ChatColor.translateAlternateColorCodes('&',title)));
 		connection.a(new PacketPlayOutScoreboardObjective(sb_obj, 2));
 	}
-    private String handleHexColor(String input) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(input);
-        StringBuffer buffer = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, ChatColor.of(input.substring(matcher.start(), matcher.end())).toString());
-        }
-        return matcher.appendTail(buffer).toString();
-    }
     @Override
     public void setLineRaw(int pos, String text, boolean create) {
         try {
@@ -71,10 +62,10 @@ public class ScoreboardLmao extends HarmonyScoreboard {
             }
             ScoreboardTeam team = new ScoreboardTeam(scoreboard, "line"+pos);
             team.a(new ChatMessage("line"+pos));
-            String pref = ComponentSerializer.toString(new TextComponent(handleHexColor(text)));
-            player.sendMessage();
-            team.b(ChatSerializer.a(pref));
-            //team.c(ChatSerializer.a(suf));
+            String pref = LineParser.splitLine(text)[0];
+            String suf = LineParser.splitLine(text)[1];
+            team.b(new ChatMessage(pref));
+            team.c(new ChatMessage(suf));
             team.g().add(txt);
             ScoreboardScore sbs = new ScoreboardScore(scoreboard, sb_obj, txt);
             sbs.a(pos);

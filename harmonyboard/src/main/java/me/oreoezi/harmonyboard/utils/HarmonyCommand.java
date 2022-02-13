@@ -1,13 +1,9 @@
 package me.oreoezi.harmonyboard.utils;
-
-import java.util.ArrayList;
-
 import org.bukkit.command.CommandSender;
 
-import me.oreoezi.harmonyboard.App;
 
 public class HarmonyCommand {
-    public HarmonyCommand(App main) {
+    public HarmonyCommand() {
 		
 	}
 	public boolean onExec(CommandSender player, String[] args) {
@@ -25,7 +21,7 @@ public class HarmonyCommand {
 	public String getArgs() {
 		return "";
 	}
-	public ArrayList<ArrayList<String>> getTabComplete() {
+	public String[][] getTabComplete() {
 		return null;
 	}
 }

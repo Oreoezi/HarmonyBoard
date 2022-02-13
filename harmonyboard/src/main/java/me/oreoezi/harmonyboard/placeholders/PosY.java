@@ -1,7 +1,7 @@
 package me.oreoezi.harmonyboard.placeholders;
 
 
-import me.oreoezi.harmonyboard.api.HarmonyPlaceholder;
+import me.oreoezi.harmonyboard.utils.HarmonyPlaceholder;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class PosY extends HarmonyPlaceholder{

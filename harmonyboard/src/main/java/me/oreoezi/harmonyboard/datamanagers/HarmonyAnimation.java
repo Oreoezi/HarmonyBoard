@@ -1,4 +1,4 @@
-package me.oreoezi.harmonyboard.utils;
+package me.oreoezi.harmonyboard.datamanagers;
 
 
 public class HarmonyAnimation {
@@ -6,7 +6,7 @@ public class HarmonyAnimation {
     private int frame = 0;
     private int frame_rate;
     private String name;
-    public HarmonyAnimation(String name, int frame_rate, String... frames) {
+    public HarmonyAnimation(String name, int frame_rate, String[] frames) {
         this.frames = frames;
         this.name = name;
         this.frame_rate = frame_rate;

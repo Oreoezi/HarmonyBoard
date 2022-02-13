@@ -2,31 +2,40 @@ package me.oreoezi.harmonyboard.api;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-
-import me.oreoezi.harmonyboard.App;
 import me.oreoezi.harmonyboard.datamanagers.ScoreboardTemplate;
 
 public class HarmonyBoardAPI {
-    App main;
     public HarmonyBoardAPI() {
-        main = (App) Bukkit.getServer().getPluginManager().getPlugin("HarmonyScoreboard");
+        
     }
+    /**
+     * @deprecated
+     */
     public PlaceholderList getPlaceholderList() {
-        return main.getPlaceholderList();
+        return HarmonyBoard.instance.getPlaceholderList();
     }
+    /**
+     * @deprecated
+     */
     public PlayerList getPlayerList() {
-        return main.getPlayerList();
+        return HarmonyBoard.instance.getPlayerList();
     }
-    public ScoreboardTemplate getScoreboardTemplate(String name) {
-        for (int i=0;i<main.getConfigs().scoreboards.size();i++) 
-            if (main.getConfigs().scoreboards.get(i).getName().equals(name)) return main.getConfigs().scoreboards.get(i);
-        return null;
-    }
+    /**
+     * @deprecated
+     */
     public ArrayList<ScoreboardTemplate> getScoreboardList() {
-        return main.getConfigs().scoreboards;
+        return HarmonyBoard.instance.getConfigs().getScoreboards();
     }
+    /**
+     * @deprecated
+     */
     public AnimationList getAnimationList() {
-        return main.getAnimationList();
+        return HarmonyBoard.instance.getAnimationList();
+    }
+    /**
+     * @deprecated
+     */
+    public ScoreboardTemplate getScoreboardTemplate(String name) {
+        return HarmonyBoard.instance.getConfigs().getScoreboardTemplate(name);
     }
 }

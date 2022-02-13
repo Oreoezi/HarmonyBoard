@@ -30,6 +30,22 @@ public class ReflectionUtils {
 		}		
 		return instance;
 	}
+	public static Object setFieldByType(Object instance, Class<?> type, Object value, int count) {
+		int cnt = 0;
+		Field[] fields = instance.getClass().getFields();
+		try {
+			for (int i=0;i<fields.length&&cnt<count;i++) {
+				if (fields[i].getType() != type) continue;
+				fields[i].setAccessible(true);
+				fields[i].set(instance, value);
+				fields[i].setAccessible(false);
+				cnt++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return instance;
+	}
     public static Class<?> getClass(String path) {
         try {
             return Class.forName(path);

@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -16,102 +12,85 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import me.oreoezi.harmonyboard.api.HarmonyBoard;
+
 
 public class Configs {
-    private Plugin plugin;
-    private HashMap<String, FileConfiguration> configs = new HashMap<String, FileConfiguration>();
-    public ArrayList<ScoreboardTemplate> scoreboards = new ArrayList<ScoreboardTemplate>();
-	public HashMap<String, FileConfiguration> animations = new HashMap<String, FileConfiguration>();
-
-    public Configs(Plugin plugin) {
-        this.plugin = plugin;
-        try {
-            createSubdirectories();
-            createDefaults();
-            getScoreboards();
-            getAnimations();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private void createSubdirectories() throws IOException {
+    private FileConfiguration config;
+    private FileConfiguration text;
+    private ArrayList<ScoreboardTemplate> scoreboards;
+	private ArrayList<HarmonyAnimation> animations;
+    public Configs(Plugin plugin) throws IOException {
+        scoreboards = new ArrayList<ScoreboardTemplate>();
+        animations = new ArrayList<HarmonyAnimation>();
         String folder = plugin.getDataFolder().getAbsolutePath();
-    	Path sbpath = Paths.get(folder + "/Scoreboards");
-    	Path anpath = Paths.get(folder + "/Animations");
-        if (!Files.exists(sbpath)) Files.createDirectories(sbpath);
-        if (!Files.exists(anpath)) Files.createDirectories(anpath);
-    }
-    private void createDefaults() throws IOException {
-        String folder = plugin.getDataFolder().getAbsolutePath();
-    	Path scoreboard_path = Paths.get(folder + "/Scoreboards/default.yml");
-        Path scoreboard_don_path = Paths.get(folder + "/Scoreboards/donator.yml");
-    	Path animation_path = Paths.get(folder + "/Animations/default.yml");
-        if (!Files.exists(scoreboard_path)) {
-            Files.createFile(scoreboard_path);
-            File config_file = new File(folder + "/Scoreboards/default.yml");
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            Reader config_defaults = new InputStreamReader(plugin.getResource("example_scoreboard.yml"), "UTF-8");
-            file_config.setDefaults((Configuration)YamlConfiguration.loadConfiguration(config_defaults));
-            file_config.options().copyDefaults(true);
-            file_config.save(config_file);
+        File sb_folder = new File(folder + "/Scoreboards");
+    	File an_folder = new File(folder + "/Animations");
+        if (!sb_folder.exists()) {
+            sb_folder.mkdir();
+            createConfig(plugin, folder + "/Scoreboards/default", "example_scoreboard");
+            createConfig(plugin, folder + "/Scoreboards/donator", "donator_scoreboard");
         }
-        if (!Files.exists(scoreboard_don_path)) {
-            Files.createFile(scoreboard_don_path);
-            File config_file = new File(folder + "/Scoreboards/donator.yml");
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            Reader config_defaults = new InputStreamReader(plugin.getResource("donator_scoreboard.yml"), "UTF-8");
-            file_config.setDefaults((Configuration)YamlConfiguration.loadConfiguration(config_defaults));
-            file_config.options().copyDefaults(true);
-            file_config.save(config_file);
+        if (!an_folder.exists()) {
+            an_folder.mkdir();
+            createConfig(plugin, folder + "/Animations/default", "example_animation");
         }
-        if (!Files.exists(animation_path)) {
-            Files.createFile(animation_path);
-            File config_file = new File(folder + "/Animations/default.yml");
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            Reader config_defaults = new InputStreamReader(plugin.getResource("example_animation.yml"), "UTF-8");
-            file_config.setDefaults((Configuration)YamlConfiguration.loadConfiguration(config_defaults));
-            file_config.options().copyDefaults(true);
-            file_config.save(config_file);
-        }
-        String[] configs = new String[] {"config", "language"}; //Just in case I'll have more in the future
-        for (int i=0;i<configs.length; i++) {
-            File config_file = new File(plugin.getDataFolder() + "/" + configs[i] + ".yml");
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            if (!config_file.exists()) {
-                Reader config_defaults = new InputStreamReader(plugin.getResource(String.valueOf(configs[i]) + ".yml"), "UTF-8");
-                file_config.setDefaults((Configuration)YamlConfiguration.loadConfiguration(config_defaults));
-                file_config.options().copyDefaults(true);
-                file_config.save(config_file);
-            }
-            this.configs.put(configs[i], file_config);
-        }
-    }
-    private void getScoreboards() {
-    	File sb_folder = new File(plugin.getDataFolder()+"/Scoreboards");
-    	String[] scoreboards = sb_folder.list();
+        config = createConfig(plugin, folder + "/config", "config");
+        text = createConfig(plugin, folder + "/language", "language");
+        String[] scoreboards = sb_folder.list();
     	for (int i=0;i<scoreboards.length;i++) {
-            File config_file = new File(plugin.getDataFolder() + "/Scoreboards/" + scoreboards[i]);
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            this.scoreboards.add(new ScoreboardTemplate(scoreboards[i].replace(".yml", ""), file_config));
+            FileConfiguration scoreboard = loadConfig(folder + "/Scoreboards/" + scoreboards[i]);
+            String title = scoreboard.getString("title");
+            String[] lines = scoreboard.getList("lines").toArray(new String[0]);
+            ScoreboardTemplate template = new ScoreboardTemplate(scoreboards[i].replace(".yml", ""), title, lines);
+            if (scoreboard.getList("conditions.permissions") != null) template.setPermissions(scoreboard.getList("conditions.permissions").toArray(new String[0]));
+            if (scoreboard.getList("conditions.worlds") != null) template.setWorlds(scoreboard.getList("conditions.worlds").toArray(new String[0]));
+            this.scoreboards.add(template);
+    	}
+        String[] animations = an_folder.list();
+        for (int i=0;i<animations.length;i++) {
+            FileConfiguration animation = loadConfig(folder + "/Animations/" + animations[i]);
+            HarmonyAnimation anim = new HarmonyAnimation(animations[i].replace(".yml", ""), 
+            animation.getInt("delay"), animation.getList("lines").toArray(new String[0]));
+            HarmonyBoard.instance.getAnimationList().addAnimation(anim);
     	}
     }
-    private void getAnimations() {
-    	File an_folder = new File(plugin.getDataFolder()+"/Animations");
-    	String[] animations = an_folder.list();
-    	for (int i=0;i<animations.length;i++) {
-            File config_file = new File(plugin.getDataFolder() + "/Animations/" + animations[i]);
-            FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
-            this.animations.put(animations[i].replace(".yml", ""), file_config);
-    	}
+    public ArrayList<ScoreboardTemplate> getScoreboards() {
+        return scoreboards;
     }
-    public FileConfiguration getConfig(String config_name) {
-        return this.configs.get(config_name);
+    public ScoreboardTemplate getScoreboardTemplate(String name) {
+        for (int i=0;i<scoreboards.size();i++) 
+            if (scoreboards.get(i).getName().equals(name)) return scoreboards.get(i);
+        return null;
     }
-    public FileConfiguration getAnimation(String animation_name) {
-   	 return this.animations.get(animation_name);
+    public ArrayList<HarmonyAnimation> getAnimations() {
+        return animations;
     }
-    public String getMessage(String path) {
-       return ChatColor.translateAlternateColorCodes('&', getConfig("language").getString(path));
+    private FileConfiguration createConfig(Plugin plugin, String path, String config_name) throws IOException {
+        File config_file = new File(path + ".yml");
+        FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
+        Reader config_defaults = new InputStreamReader(plugin.getResource(config_name + ".yml"), "UTF-8");
+        file_config.setDefaults((Configuration)YamlConfiguration.loadConfiguration(config_defaults));
+        file_config.options().copyDefaults(true);
+        file_config.save(config_file);
+        return file_config;
     }
+    private FileConfiguration loadConfig(String path) {
+        File config_file = new File(path);
+        FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
+        return file_config;
+    }
+    public FileConfiguration getConfig() {
+        return config;
+    }
+	public String getMessage(String index) {
+		if (text.getString("messages." + index) != null)
+		    return ChatColor.translateAlternateColorCodes('&', text.getString("prefix") + " " + text.getString("messages." + index));
+        return "";
+	}
+	public String getMessageNoPrefix(String index) {
+		if (text.getString("messages." + index) != null)
+			return ChatColor.translateAlternateColorCodes('&', text.getString("messages." + index));
+		return "";
+	}
 }

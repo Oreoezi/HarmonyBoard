@@ -1,6 +1,4 @@
-package me.oreoezi.harmonyboard.api;
-
-import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
+package me.oreoezi.harmonyboard.utils;
 
 public class HarmonyPlaceholder {
     public String getName() {

@@ -1,21 +1,12 @@
 package me.oreoezi.harmonyboard.api;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.configuration.file.FileConfiguration;
-
-import me.oreoezi.harmonyboard.App;
-import me.oreoezi.harmonyboard.utils.HarmonyAnimation;
+import me.oreoezi.harmonyboard.datamanagers.HarmonyAnimation;
 
 public class AnimationList {
     private ArrayList<HarmonyAnimation> anims;
-    public AnimationList(App main) {
+    public AnimationList() {
         this.anims = new ArrayList<HarmonyAnimation>();
-        for (Object key : main.getConfigs().animations.keySet()) {
-			FileConfiguration an_config = main.getConfigs().animations.get(key);
-			anims.add(new HarmonyAnimation(key.toString(), an_config.getInt("delay"), Arrays.copyOf(an_config.getList("lines").toArray(), an_config.getList("lines").toArray().length, String[].class)));
-		}
     }
     public void tick(int delay) {
         for (int i=0;i<anims.size();i++) {
@@ -30,8 +21,8 @@ public class AnimationList {
         }
         return false;
     }
-    public ArrayList<HarmonyAnimation> getAnimations() {
-        return anims;
+    public boolean addAnimation(HarmonyAnimation animation) {
+        return anims.add(animation);
     }
     public HarmonyAnimation getAnimation(String name) {
         for (int i=0;i<anims.size();i++) {
