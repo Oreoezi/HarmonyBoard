@@ -14,8 +14,7 @@ public class HarmonyPlayer {
     public HarmonyPlayer(Player player) {
         this.player = player;
         int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
-        if (version < 13) scoreboard = new ScoreboardLegacy(this);
-        else if (version < 17) scoreboard = new ScoreboardUpdated(this);
+        if (version < 17) scoreboard = new ScoreboardLegacy(this);
         else if (version < 18) scoreboard = new ScoreboardUtopic(this);
         else scoreboard = new ScoreboardLmao(this);
     }

@@ -81,7 +81,9 @@ public class ScoreboardCommand extends HarmonyCommand {
 	public String[][] getTabComplete() {
 		String[][] args = new String[3][];
 		args[0] = new String[]{"set", "remove"};
-		args[1] = Bukkit.getOnlinePlayers().toArray(new String[0]);
+		int index = 0;
+		for (Player p : Bukkit.getOnlinePlayers())
+			args[1][index++] = p.getName();
 		ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
 		for (int i=0;i<templates.size();i++)
 			args[1][i] = templates.get(i).getName();

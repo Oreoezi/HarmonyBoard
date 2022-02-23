@@ -9,9 +9,8 @@ public class PlayerConnection {
     private Object connection;
     public PlayerConnection(Player player) {
         try {
-            Object craftplayer = player.getClass().getMethod("getHandle").invoke(player);
+            Object craftplayer = NMSUtils.getHandle.invoke(player);
             if (NMSUtils.versionId < 17) connection = craftplayer.getClass().getField("playerConnection").get(craftplayer);
-            else connection = craftplayer.getClass().getField("b").get(craftplayer);
         } catch(Exception e) {
             e.printStackTrace();
         } 

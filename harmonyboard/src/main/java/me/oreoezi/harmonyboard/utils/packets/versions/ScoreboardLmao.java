@@ -72,6 +72,8 @@ public class ScoreboardLmao extends HarmonyScoreboard {
     }
     @Override
     public void destroy() {
+        for (int i=hplayer.getPreset().length;i>0;i--) 
+            connection.a(PacketPlayOutScoreboardTeam.a(new ScoreboardTeam(scoreboard, "line" + i)));
         connection.a(new PacketPlayOutScoreboardObjective(sb_obj, 1));
     }
 }

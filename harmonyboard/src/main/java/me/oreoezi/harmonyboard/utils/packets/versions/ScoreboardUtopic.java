@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
 import me.oreoezi.harmonyboard.utils.packets.LineParser;
+import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
 import me.oreoezi.harmonyboard.utils.packets.ReflectionUtils;
+import net.minecraft.world.scores.ScoreboardTeam;
 
 public class ScoreboardUtopic extends HarmonyScoreboard {
 	private Object connection;
@@ -104,6 +106,11 @@ public class ScoreboardUtopic extends HarmonyScoreboard {
     @Override
     public void destroy() {
         try {
+            for (int i=hplayer.getPreset().length;i>0;i--){
+                Object team = ScoreboardTeam.getDeclaredConstructor(Scoreboard, String.class).newInstance(scoreboard, "line"+i);
+                Object teampacket = S3E.getMethod("a", ScoreboardTeam).invoke(null, team);
+                sendPacket(teampacket);
+            }
             Object packet = S3B.getConstructor(ScoreboardObjective, int.class).newInstance(sb_obj, 1);
             sendPacket(packet);
         }

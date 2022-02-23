@@ -1,6 +1,7 @@
 package me.oreoezi.harmonyboard.utils.packets;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 
@@ -19,6 +20,7 @@ public class NMSUtils {
     public static Class<?> NMSScoreboardScore = ReflectionUtils.getClass("net.minecraft.server." + version + ".ScoreboardScore");
     public static Class<?> NMSIScoreboardCriteria = ReflectionUtils.getClass("net.minecraft.server." + version + ".IScoreboardCriteria");
     public static Constructor<?> ChatMessage = versionId > 12 ? ReflectionUtils.getConstructor("net.minecraft.server." + version + ".ChatMessage", String.class) : null;
+    public static Method getHandle = versionId < 17 ? ReflectionUtils.getMethod("org.bukkit.craftbukkit." + version + ".entity.CraftPlayer", "getHandle") : null;
     public static Class<?> Action = versionId > 12 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".ScoreboardServer$Action") : null;
     public static Class<?> EnumScoreboardHealthDisplay = versionId > 12 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".IScoreboardCriteria$EnumScoreboardHealthDisplay") : null;
     public static class NMSPacket {
