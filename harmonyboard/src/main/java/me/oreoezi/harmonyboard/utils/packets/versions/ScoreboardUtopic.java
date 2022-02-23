@@ -9,10 +9,7 @@ import org.bukkit.entity.Player;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
 import me.oreoezi.harmonyboard.utils.packets.LineParser;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
 import me.oreoezi.harmonyboard.utils.packets.ReflectionUtils;
-import net.minecraft.world.scores.ScoreboardTeam;
-
 public class ScoreboardUtopic extends HarmonyScoreboard {
 	private Object connection;
 	private Object scoreboard;

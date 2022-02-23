@@ -82,11 +82,13 @@ public class ScoreboardCommand extends HarmonyCommand {
 		String[][] args = new String[3][];
 		args[0] = new String[]{"set", "remove"};
 		int index = 0;
+		args[1] = new String[Bukkit.getOnlinePlayers().size()];
 		for (Player p : Bukkit.getOnlinePlayers())
 			args[1][index++] = p.getName();
 		ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+		args[2] = new String[templates.size()];
 		for (int i=0;i<templates.size();i++)
-			args[1][i] = templates.get(i).getName();
+			args[2][i] = templates.get(i).getName();
 		return args;
 	}
 }
