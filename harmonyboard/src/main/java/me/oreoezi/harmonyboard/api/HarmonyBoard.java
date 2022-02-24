@@ -10,6 +10,7 @@ import me.oreoezi.harmonyboard.ThreadMain;
 import me.oreoezi.harmonyboard.command.CommandManager;
 import me.oreoezi.harmonyboard.datamanagers.Configs;
 import me.oreoezi.harmonyboard.datamanagers.Database;
+import me.oreoezi.harmonyboard.metrics.Tracking;
 
 public class HarmonyBoard {
     public static HarmonyBoard instance;
@@ -24,6 +25,7 @@ public class HarmonyBoard {
     private AnimationList animationlist;
 
     public HarmonyBoard(JavaPlugin main) {
+        Tracking.init(main);
         instance = this;
         this.main = main;
         init();
