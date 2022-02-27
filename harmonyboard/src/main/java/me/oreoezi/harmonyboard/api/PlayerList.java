@@ -38,8 +38,7 @@ public class PlayerList {
     public int size() {
         return playerlist.size();
     }
-    private void initPlayer(ScoreboardTemplate sb_template, Player player) {
-        HarmonyPlayer hplayer = new HarmonyPlayer(player); 
+    private void initPlayer(ScoreboardTemplate sb_template, HarmonyPlayer hplayer) {
         String title = sb_template.getTitle();
         String[] lines = sb_template.getPreset();
         if (hasOraxen) {
@@ -54,20 +53,20 @@ public class PlayerList {
         hplayer.getScoreboard().create();
         addPlayer(hplayer);
     }
-    public boolean addPlayer(Player player) {
-       if (!isToggled(player.getUniqueId().toString())) return false;
+    public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
+       if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
        ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
         for (int i=0;i<templates.size();i++) {
             if (templates.get(i).isDefault()) continue; //priority for nondefault
-            if (!templates.get(i).isMatching(player)) continue;
+            if (!templates.get(i).isMatching(hplayer)) continue;
             ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, player);
+            initPlayer(sb_template, hplayer);
             return true;
         }
         for (int i=0;i<templates.size();i++) {
             if (!templates.get(i).isDefault()) continue;
             ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, player);
+            initPlayer(sb_template, hplayer);
             return true;
         }
         return false;

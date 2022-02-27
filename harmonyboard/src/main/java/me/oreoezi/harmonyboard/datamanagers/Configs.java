@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
+import me.oreoezi.harmonyboard.events.EventEnum;
 
 
 public class Configs {
@@ -45,6 +46,15 @@ public class Configs {
             ScoreboardTemplate template = new ScoreboardTemplate(scoreboards[i].replace(".yml", ""), title, lines);
             if (scoreboard.getList("conditions.permissions") != null) template.setPermissions(scoreboard.getList("conditions.permissions").toArray(new String[0]));
             if (scoreboard.getList("conditions.worlds") != null) template.setWorlds(scoreboard.getList("conditions.worlds").toArray(new String[0]));
+            if (scoreboard.getList("conditions.events") != null) {
+                    String[] eventstr = scoreboard.getList("conditions.events").toArray(new String[0]);
+                    EventEnum[] events = new EventEnum[eventstr.length];
+                    for (int j=0;i<eventstr.length;j++)
+                    {
+                        events[j] = EventEnum.valueOf(eventstr[j]);
+                    }
+                    template.setEvents(events);
+            }
             this.scoreboards.add(template);
     	}
         String[] animations = an_folder.list();

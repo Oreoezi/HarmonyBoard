@@ -1,4 +1,4 @@
-package me.oreoezi.harmonyboard;
+package me.oreoezi.harmonyboard.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,12 +10,10 @@ import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class Events implements Listener {
-    public Events() {
-
-    }
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        HarmonyBoard.instance.getPlayerList().addPlayer(event.getPlayer());
+        HarmonyPlayer hplayer = new HarmonyPlayer(event.getPlayer());
+        HarmonyBoard.instance.getPlayerList().addPlayer(hplayer);
     }
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
@@ -27,6 +25,7 @@ public class Events implements Listener {
 	public void onWorldChange(PlayerChangedWorldEvent event) {
         HarmonyPlayer hplayer = HarmonyBoard.instance.getPlayerList().getPlayer(event.getPlayer());
         if (hplayer != null) hplayer.destroy();
-        HarmonyBoard.instance.getPlayerList().addPlayer(event.getPlayer());
+        hplayer = new HarmonyPlayer(event.getPlayer());
+        HarmonyBoard.instance.getPlayerList().addPlayer(hplayer);
     }
 }

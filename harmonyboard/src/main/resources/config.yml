@@ -1,4 +1,5 @@
 allow_placeholders_in_title: false
+event_based_scoreboards: false
 scoreboard_update_rate: 1
 save_scoreboard_preferences: false
 mysql:

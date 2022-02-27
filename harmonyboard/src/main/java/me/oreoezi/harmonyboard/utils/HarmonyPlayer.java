@@ -3,6 +3,8 @@ package me.oreoezi.harmonyboard.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import me.oreoezi.harmonyboard.events.EventEnum;
+import me.oreoezi.harmonyboard.events.EventTimestamp;
 import me.oreoezi.harmonyboard.utils.packets.versions.*;
 
 public class HarmonyPlayer {
@@ -11,12 +13,14 @@ public class HarmonyPlayer {
     private String title = "";
     private String[] preset = {};
     private boolean remove = false;
+    private EventTimestamp[] events;
     public HarmonyPlayer(Player player) {
         this.player = player;
         int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
         if (version < 17) scoreboard = new ScoreboardLegacy(this);
         else if (version < 18) scoreboard = new ScoreboardUtopic(this);
         else scoreboard = new ScoreboardLmao(this);
+        events = new EventTimestamp[EventEnum.values().length];
     }
     public Player getPlayer() {
         return player;
@@ -63,5 +67,17 @@ public class HarmonyPlayer {
     }
     public HarmonyScoreboard getScoreboard() {
         return scoreboard;
+    }
+    public void registerEvent(EventEnum event) {
+
+    }
+    public void unregisterEvent(EventEnum event) {
+
+    }
+    public EventTimestamp getEvent(EventEnum event) {
+        for (int i=0;i<events.length;i++) {
+            if (events[i].getEvent() == event) return events[i];
+        }
+        return null;
     }
 }

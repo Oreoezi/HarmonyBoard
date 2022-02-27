@@ -8,9 +8,6 @@ import me.oreoezi.harmonyboard.utils.HarmonyCommand;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class ToggleCommand extends HarmonyCommand {
-    public ToggleCommand() {
-
-    }
     @Override
     public boolean onExec(CommandSender sender, String[] args) {
         if (!HarmonyBoard.instance.getConfigs().getConfig().getBoolean("save_scoreboard_preferences")) {
@@ -25,7 +22,7 @@ public class ToggleCommand extends HarmonyCommand {
         HarmonyPlayer target = HarmonyBoard.instance.getPlayerList().getPlayer(player);
         if (target == null) {
             HarmonyBoard.instance.getDatabaseInstance().runQuery("DELETE FROM toggle_off WHERE uuid='" + player.getUniqueId().toString() + "'");
-            HarmonyBoard.instance.getPlayerList().addPlayer(player);
+            HarmonyBoard.instance.getPlayerList().addPlayer(HarmonyBoard.instance.getPlayerList().getPlayer(player));
             sender.sendMessage(HarmonyBoard.instance.getConfigs().getMessage("player.toggle_on"));
             return true;
         }

@@ -12,8 +12,6 @@ import me.oreoezi.harmonyboard.utils.HarmonyCommand;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class ScoreboardCommand extends HarmonyCommand {
-    public ScoreboardCommand() {
-    }
     @Override
     public boolean onExec(CommandSender player, String[] args) {
 		if (args.length < 3) {

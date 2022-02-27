@@ -1,0 +1,3 @@
+combat:
+ enabled: true
+ delay: 10

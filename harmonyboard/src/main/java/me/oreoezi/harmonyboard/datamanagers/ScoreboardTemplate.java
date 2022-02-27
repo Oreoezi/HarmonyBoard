@@ -1,8 +1,12 @@
 package me.oreoezi.harmonyboard.datamanagers;
 import org.bukkit.entity.Player;
 
+import me.oreoezi.harmonyboard.events.EventEnum;
+import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
+
 public class ScoreboardTemplate {
     private String name;
+    private EventEnum[] events;
     private String[] permissions;
     private String[] worlds;
     private String[] preset;
@@ -24,10 +28,12 @@ public class ScoreboardTemplate {
      * @param player Player checked for eligibility.
      * @return Whether the player is eligibile.
      */
-    public boolean isMatching(Player player) {
-        if (!hasWorld(player))
+    public boolean isMatching(HarmonyPlayer player) {
+        if (!hasWorld(player.getPlayer()))
             return false;
-        if (!hasPermissions(player))
+        if (!hasPermissions(player.getPlayer()))
+            return false;
+        if (!hasEvent(player))
             return false;
         return true;
     }
@@ -44,8 +50,14 @@ public class ScoreboardTemplate {
             if (worlds[i].equals(worldname)) return true;
         return false;
     }
+    private boolean hasEvent(HarmonyPlayer hplayer) {
+        for (int i=0;i<events.length;i++) {
+            if (hplayer.getEvent(events[i]) == null) return false;
+        }
+        return true; 
+    }
     public boolean isDefault() {
-        return worlds.length < 1 && permissions.length < 1;
+        return worlds.length < 1 && permissions.length < 1 && events.length < 1;
     }
     public String getName() {
         return name;
@@ -61,5 +73,8 @@ public class ScoreboardTemplate {
     }
     public void setWorlds(String[] worlds) {
         this.worlds = worlds;
+    }
+    public void setEvents(EventEnum[] events) {
+        this.events = events;
     }
 }

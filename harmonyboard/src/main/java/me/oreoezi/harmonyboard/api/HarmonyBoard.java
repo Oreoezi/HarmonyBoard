@@ -5,12 +5,13 @@ import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.oreoezi.harmonyboard.Events;
 import me.oreoezi.harmonyboard.ThreadMain;
 import me.oreoezi.harmonyboard.command.CommandManager;
 import me.oreoezi.harmonyboard.datamanagers.Configs;
 import me.oreoezi.harmonyboard.datamanagers.Database;
+import me.oreoezi.harmonyboard.events.Events;
 import me.oreoezi.harmonyboard.metrics.Tracking;
+import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class HarmonyBoard {
     public static HarmonyBoard instance;
@@ -69,8 +70,10 @@ public class HarmonyBoard {
             else database = new Database(main.getDataFolder().getAbsolutePath() + "/database.sql");
             database.runQuery("CREATE TABLE IF NOT EXISTS toggle_off (uuid VARCHAR(256))");
         }
-        for (Player player : main.getServer().getOnlinePlayers()) 
-            HarmonyBoard.instance.getPlayerList().addPlayer(player);
+        for (Player player : main.getServer().getOnlinePlayers()) {
+            HarmonyPlayer hplayer = new HarmonyPlayer(player);
+            HarmonyBoard.instance.getPlayerList().addPlayer(hplayer);
+        }   
         events = new Events();
         main.getServer().getPluginManager().registerEvents(events, main);
         boolean hasPAPI = main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null; 
