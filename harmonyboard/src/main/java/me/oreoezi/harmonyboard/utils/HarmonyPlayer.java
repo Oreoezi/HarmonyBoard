@@ -1,5 +1,7 @@
 package me.oreoezi.harmonyboard.utils;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -13,14 +15,11 @@ public class HarmonyPlayer {
     private String title = "";
     private String[] preset = {};
     private boolean remove = false;
-    private EventTimestamp[] events;
+    private ArrayList<EventTimestamp> events;
     public HarmonyPlayer(Player player) {
         this.player = player;
-        int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
-        if (version < 17) scoreboard = new ScoreboardLegacy(this);
-        else if (version < 18) scoreboard = new ScoreboardUtopic(this);
-        else scoreboard = new ScoreboardLmao(this);
-        events = new EventTimestamp[EventEnum.values().length];
+        create();
+        this.events = new ArrayList<EventTimestamp>();
     }
     public Player getPlayer() {
         return player;
@@ -69,15 +68,28 @@ public class HarmonyPlayer {
         return scoreboard;
     }
     public void registerEvent(EventEnum event) {
-
+        EventTimestamp ets = new EventTimestamp(event);
+        unregisterEvent(event);
+        events.add(ets);
     }
-    public void unregisterEvent(EventEnum event) {
-
+    public EventTimestamp unregisterEvent(EventEnum event) {
+        for (int i=0;i<events.size();i++)
+            if (events.get(i).getEvent() == event) return events.remove(i);
+        return null;
     }
     public EventTimestamp getEvent(EventEnum event) {
-        for (int i=0;i<events.length;i++) {
-            if (events[i].getEvent() == event) return events[i];
+        for (int i=0;i<events.size();i++) {
+            if (events.get(i).getEvent() == event) return events.get(i);
         }
         return null;
+    }
+    public ArrayList<EventTimestamp> getEvents() {
+        return events;
+    }
+    public void create() {
+        int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
+        if (version < 17) scoreboard = new ScoreboardLegacy(this);
+        else if (version < 18) scoreboard = new ScoreboardUtopic(this);
+        else scoreboard = new ScoreboardLmao(this);
     }
 }

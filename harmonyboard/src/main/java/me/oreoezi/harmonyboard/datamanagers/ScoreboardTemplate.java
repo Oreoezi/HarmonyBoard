@@ -22,6 +22,7 @@ public class ScoreboardTemplate {
         this.preset = lines;
         this.worlds = new String[0];
         this.permissions = new String[0];
+        this.events = new EventEnum[0];
     }
     /**
      * Checks if the player matches with the scoreboard conditions.
@@ -51,6 +52,7 @@ public class ScoreboardTemplate {
         return false;
     }
     private boolean hasEvent(HarmonyPlayer hplayer) {
+        System.out.print(events.length);
         for (int i=0;i<events.length;i++) {
             if (hplayer.getEvent(events[i]) == null) return false;
         }

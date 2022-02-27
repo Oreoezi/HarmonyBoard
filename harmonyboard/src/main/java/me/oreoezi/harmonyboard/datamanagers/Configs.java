@@ -49,8 +49,7 @@ public class Configs {
             if (scoreboard.getList("conditions.events") != null) {
                     String[] eventstr = scoreboard.getList("conditions.events").toArray(new String[0]);
                     EventEnum[] events = new EventEnum[eventstr.length];
-                    for (int j=0;i<eventstr.length;j++)
-                    {
+                    for (int j=0;j<eventstr.length;j++) {
                         events[j] = EventEnum.valueOf(eventstr[j]);
                     }
                     template.setEvents(events);

@@ -20,6 +20,12 @@ public class PlayerList {
     public void addPlayer(HarmonyPlayer player) {
         playerlist.add(player);
     }
+    public boolean exists(HarmonyPlayer player) {
+        for (int i=0;i<playerlist.size();i++) {
+            if (playerlist.get(i).equals(player)) return true;
+        }
+        return false;
+    }
     public HarmonyPlayer getPlayer(Player player) {
         for (int i=0;i<playerlist.size();i++) {
             if (playerlist.get(i).getPlayer().getName().equals(player.getName())) return playerlist.get(i);
@@ -51,7 +57,7 @@ public class PlayerList {
         }
         hplayer.setPreset(title, lines);
         hplayer.getScoreboard().create();
-        addPlayer(hplayer);
+        if (!exists(hplayer)) addPlayer(hplayer);
     }
     public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
        if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;

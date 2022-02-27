@@ -9,6 +9,7 @@ import me.oreoezi.harmonyboard.ThreadMain;
 import me.oreoezi.harmonyboard.command.CommandManager;
 import me.oreoezi.harmonyboard.datamanagers.Configs;
 import me.oreoezi.harmonyboard.datamanagers.Database;
+import me.oreoezi.harmonyboard.events.EventScoreboards;
 import me.oreoezi.harmonyboard.events.Events;
 import me.oreoezi.harmonyboard.metrics.Tracking;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
@@ -75,11 +76,16 @@ public class HarmonyBoard {
             HarmonyBoard.instance.getPlayerList().addPlayer(hplayer);
         }   
         events = new Events();
+        EventScoreboards eventsb = new EventScoreboards();
+        boolean enableEvents = configs.getConfig().getBoolean("event_based_scoreboards");
         main.getServer().getPluginManager().registerEvents(events, main);
+        if (enableEvents)
+            main.getServer().getPluginManager().registerEvents(eventsb, main);
         boolean hasPAPI = main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null; 
         boolean updateTitles = configs.getConfig().getBoolean("allow_placeholders_in_title");
+        
         int update_rate = configs.getConfig().getInt("scoreboard_update_rate");
-        threadmain = new ThreadMain(hasPAPI, updateTitles, update_rate);
+        threadmain = new ThreadMain(hasPAPI, updateTitles, enableEvents, update_rate);
         threadmain.runTaskTimerAsynchronously(main, update_rate, update_rate);
         main.getCommand("harmonyboard").setExecutor(commandmanager);
         main.getCommand("harmonyboard").setTabCompleter(commandmanager);
