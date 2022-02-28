@@ -35,7 +35,8 @@ public class ThreadMain extends BukkitRunnable {
                 ArrayList<EventTimestamp> events = player.getEvents();
                 boolean shouldChange = false;
                 for (int j=0;j<events.size()&&!shouldChange;j++) {
-                    if (events.get(j).getDate() > System.currentTimeMillis() - 10000) 
+                    if (events.get(j).getDate() > System.currentTimeMillis() - HarmonyBoard.instance.getConfigs().
+                    getEventTime(events.get(j).getEvent())) 
                         continue;
                     player.getScoreboard().destroy();
                     player.getEvents().remove(j);

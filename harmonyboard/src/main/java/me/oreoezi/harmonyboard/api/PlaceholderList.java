@@ -2,8 +2,8 @@ package me.oreoezi.harmonyboard.api;
 
 import java.util.ArrayList;
 
+import me.oreoezi.harmonyboard.datamanagers.HarmonyPlaceholder;
 import me.oreoezi.harmonyboard.placeholders.*;
-import me.oreoezi.harmonyboard.utils.HarmonyPlaceholder;
 
 public class PlaceholderList {
     private ArrayList<HarmonyPlaceholder> placeholders;

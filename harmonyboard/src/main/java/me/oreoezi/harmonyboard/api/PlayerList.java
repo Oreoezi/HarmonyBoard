@@ -12,9 +12,11 @@ public class PlayerList {
     private ArrayList<HarmonyPlayer> playerlist;
     private boolean hasOraxen;
     private boolean checkToggle;
-    public PlayerList(boolean hasOraxen, boolean checkToggle) {
+    private boolean hasEvents;
+    public PlayerList(boolean hasOraxen, boolean checkToggle, boolean hasEvents) {
         this.hasOraxen = hasOraxen;
         this.checkToggle = checkToggle;
+        this.hasEvents = hasEvents;
         playerlist = new ArrayList<HarmonyPlayer>();
     }
     public void addPlayer(HarmonyPlayer player) {
@@ -60,14 +62,16 @@ public class PlayerList {
         if (!exists(hplayer)) addPlayer(hplayer);
     }
     public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
-       if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
-       ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
-       for (int i=0;i<templates.size();i++) {
-            if (templates.get(i).getEvents().length < 1) continue; //priority for event
-            if (!templates.get(i).isMatching(hplayer)) continue;
-            ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, hplayer);
-            return true;
+        if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
+        ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+        if (hasEvents) {
+            for (int i=0;i<templates.size();i++) {
+                if (templates.get(i).getEvents().length < 1) continue; //priority for event
+                if (!templates.get(i).isMatching(hplayer)) continue;
+                ScoreboardTemplate sb_template = templates.get(i);
+                initPlayer(sb_template, hplayer);
+                return true;
+            }
         }
         for (int i=0;i<templates.size();i++) {
             if (templates.get(i).isDefault()) continue; //priority for nondefault

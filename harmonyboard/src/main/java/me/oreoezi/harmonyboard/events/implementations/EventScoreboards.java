@@ -1,4 +1,4 @@
-package me.oreoezi.harmonyboard.events;
+package me.oreoezi.harmonyboard.events.implementations;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,11 +7,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
+import me.oreoezi.harmonyboard.events.EventEnum;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class EventScoreboards implements Listener {
     public EventScoreboards() {
         HandlerList.unregisterAll(this);
+        
     }
     @EventHandler
     public void onAttack(EntityDamageByEntityEvent event) {

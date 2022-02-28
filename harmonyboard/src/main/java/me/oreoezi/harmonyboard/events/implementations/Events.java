@@ -1,7 +1,6 @@
-package me.oreoezi.harmonyboard.events;
+package me.oreoezi.harmonyboard.events.implementations;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -11,9 +10,6 @@ import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class Events implements Listener {
-    public Events() {
-        HandlerList.unregisterAll(this);
-    }
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         HarmonyPlayer hplayer = new HarmonyPlayer(event.getPlayer());

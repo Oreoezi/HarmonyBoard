@@ -3,7 +3,7 @@ package me.oreoezi.harmonyboard.placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import me.oreoezi.harmonyboard.utils.HarmonyPlaceholder;
+import me.oreoezi.harmonyboard.datamanagers.HarmonyPlaceholder;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
 
