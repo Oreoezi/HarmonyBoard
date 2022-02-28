@@ -62,6 +62,13 @@ public class PlayerList {
     public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
        if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
        ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+       for (int i=0;i<templates.size();i++) {
+            if (templates.get(i).getEvents().length < 1) continue; //priority for event
+            if (!templates.get(i).isMatching(hplayer)) continue;
+            ScoreboardTemplate sb_template = templates.get(i);
+            initPlayer(sb_template, hplayer);
+            return true;
+        }
         for (int i=0;i<templates.size();i++) {
             if (templates.get(i).isDefault()) continue; //priority for nondefault
             if (!templates.get(i).isMatching(hplayer)) continue;

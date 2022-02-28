@@ -52,14 +52,16 @@ public class ScoreboardTemplate {
         return false;
     }
     private boolean hasEvent(HarmonyPlayer hplayer) {
-        System.out.print(events.length);
         for (int i=0;i<events.length;i++) {
-            if (hplayer.getEvent(events[i]) == null) return false;
+            if (hplayer.getEvent(events[i]) != null) return true;
         }
-        return true; 
+        return false; 
     }
     public boolean isDefault() {
         return worlds.length < 1 && permissions.length < 1 && events.length < 1;
+    }
+    public EventEnum[] getEvents() {
+        return events;
     }
     public String getName() {
         return name;
