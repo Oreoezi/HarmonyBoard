@@ -13,7 +13,7 @@ public class EventSystem {
     
     public EventSystem(Plugin main, boolean hasEvents) {
         if (events != null) return;
-        events = new Events();
+        events = new Events(hasEvents);
         main.getServer().getPluginManager().registerEvents(events, main);
         if (!hasEvents) return;
         eventScoreboards = new EventScoreboards();

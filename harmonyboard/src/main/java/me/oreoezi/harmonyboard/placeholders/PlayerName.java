@@ -7,7 +7,7 @@ import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 public class PlayerName extends HarmonyPlaceholder{
 	@Override
 	public String getName() {
-		return "player";
+		return "name";
 	}
 	@Override
 	public String getValue(HarmonyPlayer player) {
