@@ -11,4 +11,6 @@ conditions:
  worlds:
   - world_nether
   - world_the_end
+ events:
+  - COMBAT
  permission: "donator.perm"

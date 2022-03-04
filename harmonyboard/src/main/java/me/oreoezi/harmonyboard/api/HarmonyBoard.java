@@ -5,19 +5,20 @@ import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.oreoezi.harmonyboard.Events;
 import me.oreoezi.harmonyboard.ThreadMain;
 import me.oreoezi.harmonyboard.command.CommandManager;
 import me.oreoezi.harmonyboard.datamanagers.Configs;
 import me.oreoezi.harmonyboard.datamanagers.Database;
+import me.oreoezi.harmonyboard.events.EventSystem;
 import me.oreoezi.harmonyboard.metrics.Tracking;
+import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class HarmonyBoard {
     public static HarmonyBoard instance;
     private JavaPlugin main;
     private Configs configs;
     private Database database;
-    private Events events;
+    private EventSystem eventsystem;
     private ThreadMain threadmain;
     private CommandManager commandmanager;
     private PlayerList playerlist;
@@ -53,7 +54,9 @@ public class HarmonyBoard {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        playerlist = new PlayerList(main.getServer().getPluginManager().getPlugin("Oraxen") != null, configs.getConfig().getBoolean("save_scoreboard_preferences"));
+        boolean hasEvents = configs.getConfig().getBoolean("event_based_scoreboards");
+        playerlist = new PlayerList(main.getServer().getPluginManager().getPlugin("Oraxen") != null, 
+        configs.getConfig().getBoolean("save_scoreboard_preferences"), hasEvents);
         placeholderlist = new PlaceholderList();
         commandmanager = new CommandManager(configs);
         if (configs.getConfig().getBoolean("save_scoreboard_preferences")) {
@@ -69,14 +72,15 @@ public class HarmonyBoard {
             else database = new Database(main.getDataFolder().getAbsolutePath() + "/database.sql");
             database.runQuery("CREATE TABLE IF NOT EXISTS toggle_off (uuid VARCHAR(256))");
         }
-        for (Player player : main.getServer().getOnlinePlayers()) 
-            HarmonyBoard.instance.getPlayerList().addPlayer(player);
-        events = new Events();
-        main.getServer().getPluginManager().registerEvents(events, main);
+        for (Player player : main.getServer().getOnlinePlayers()) {
+            HarmonyPlayer hplayer = new HarmonyPlayer(player);
+            HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(hplayer);
+        }   
+        eventsystem = new EventSystem(main, hasEvents);
         boolean hasPAPI = main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null; 
         boolean updateTitles = configs.getConfig().getBoolean("allow_placeholders_in_title");
         int update_rate = configs.getConfig().getInt("scoreboard_update_rate");
-        threadmain = new ThreadMain(hasPAPI, updateTitles, update_rate);
+        threadmain = new ThreadMain(hasPAPI, updateTitles, hasEvents, update_rate);
         threadmain.runTaskTimerAsynchronously(main, update_rate, update_rate);
         main.getCommand("harmonyboard").setExecutor(commandmanager);
         main.getCommand("harmonyboard").setTabCompleter(commandmanager);

@@ -13,11 +13,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
+import me.oreoezi.harmonyboard.events.EventEnum;
 
 
 public class Configs {
     private FileConfiguration config;
     private FileConfiguration text;
+    private FileConfiguration events;
     private ArrayList<ScoreboardTemplate> scoreboards;
 	private ArrayList<HarmonyAnimation> animations;
     public Configs(Plugin plugin) throws IOException {
@@ -37,6 +39,7 @@ public class Configs {
         }
         config = createConfig(plugin, folder + "/config", "config");
         text = createConfig(plugin, folder + "/language", "language");
+        events = createEventsConfig(plugin, folder + "/events");
         String[] scoreboards = sb_folder.list();
     	for (int i=0;i<scoreboards.length;i++) {
             FileConfiguration scoreboard = loadConfig(folder + "/Scoreboards/" + scoreboards[i]);
@@ -45,6 +48,14 @@ public class Configs {
             ScoreboardTemplate template = new ScoreboardTemplate(scoreboards[i].replace(".yml", ""), title, lines);
             if (scoreboard.getList("conditions.permissions") != null) template.setPermissions(scoreboard.getList("conditions.permissions").toArray(new String[0]));
             if (scoreboard.getList("conditions.worlds") != null) template.setWorlds(scoreboard.getList("conditions.worlds").toArray(new String[0]));
+            if (scoreboard.getList("conditions.events") != null) {
+                    String[] eventstr = scoreboard.getList("conditions.events").toArray(new String[0]);
+                    EventEnum[] events = new EventEnum[eventstr.length];
+                    for (int j=0;j<eventstr.length;j++) {
+                        events[j] = EventEnum.valueOf(eventstr[j]);
+                    }
+                    template.setEvents(events);
+            }
             this.scoreboards.add(template);
     	}
         String[] animations = an_folder.list();
@@ -75,6 +86,18 @@ public class Configs {
         file_config.save(config_file);
         return file_config;
     }
+    private FileConfiguration createEventsConfig(Plugin plugin, String path) throws IOException {
+        File config_file = new File(path + ".yml");
+        FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
+        EventEnum[] enums = EventEnum.values();
+        for (int i=0;i<enums.length;i++) {
+            if (file_config.contains(enums[i].toString())) continue;
+            file_config.set(enums[i].toString()+".time", 10);
+            file_config.set(enums[i].toString()+".enabled", true);
+        }
+        file_config.save(config_file);
+        return file_config;
+    }
     private FileConfiguration loadConfig(String path) {
         File config_file = new File(path);
         FileConfiguration file_config = (FileConfiguration)YamlConfiguration.loadConfiguration(config_file);
@@ -93,4 +116,10 @@ public class Configs {
 			return ChatColor.translateAlternateColorCodes('&', text.getString("messages." + index));
 		return "";
 	}
+    public boolean isEventEnabled(EventEnum event) {
+        return events.getBoolean(event.toString() + ".enabled");
+    }
+    public int getEventTime(EventEnum event) {
+        return events.getInt(event.toString() + ".time");
+    }
 }

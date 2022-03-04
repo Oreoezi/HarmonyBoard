@@ -1,6 +1,6 @@
 package me.oreoezi.harmonyboard.placeholders;
 
-import me.oreoezi.harmonyboard.utils.HarmonyPlaceholder;
+import me.oreoezi.harmonyboard.datamanagers.HarmonyPlaceholder;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class PosZ extends HarmonyPlaceholder{

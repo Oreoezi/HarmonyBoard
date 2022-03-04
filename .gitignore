@@ -8,3 +8,4 @@ target/
 .apt_generated*/
 testplugin/
 *.jar
+libs/

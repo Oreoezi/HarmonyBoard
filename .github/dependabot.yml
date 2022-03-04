@@ -1,8 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "/"
+    directory: "/harmonyboard"
     schedule:
       interval: "daily"
     allow:
       - dependency-name: "placeholderapi"
+      - dependency-name: "bungeecord-api"

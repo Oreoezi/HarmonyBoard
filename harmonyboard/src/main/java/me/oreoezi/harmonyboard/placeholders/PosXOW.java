@@ -2,7 +2,7 @@ package me.oreoezi.harmonyboard.placeholders;
 
 import org.bukkit.World.Environment;
 
-import me.oreoezi.harmonyboard.utils.HarmonyPlaceholder;
+import me.oreoezi.harmonyboard.datamanagers.HarmonyPlaceholder;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
 public class PosXOW extends HarmonyPlaceholder{

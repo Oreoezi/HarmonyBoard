@@ -12,13 +12,21 @@ public class PlayerList {
     private ArrayList<HarmonyPlayer> playerlist;
     private boolean hasOraxen;
     private boolean checkToggle;
-    public PlayerList(boolean hasOraxen, boolean checkToggle) {
+    private boolean hasEvents;
+    public PlayerList(boolean hasOraxen, boolean checkToggle, boolean hasEvents) {
         this.hasOraxen = hasOraxen;
         this.checkToggle = checkToggle;
+        this.hasEvents = hasEvents;
         playerlist = new ArrayList<HarmonyPlayer>();
     }
     public void addPlayer(HarmonyPlayer player) {
         playerlist.add(player);
+    }
+    public boolean exists(HarmonyPlayer player) {
+        for (int i=0;i<playerlist.size();i++) {
+            if (playerlist.get(i).equals(player)) return true;
+        }
+        return false;
     }
     public HarmonyPlayer getPlayer(Player player) {
         for (int i=0;i<playerlist.size();i++) {
@@ -38,8 +46,7 @@ public class PlayerList {
     public int size() {
         return playerlist.size();
     }
-    private void initPlayer(ScoreboardTemplate sb_template, Player player) {
-        HarmonyPlayer hplayer = new HarmonyPlayer(player); 
+    private void initPlayer(ScoreboardTemplate sb_template, HarmonyPlayer hplayer) {
         String title = sb_template.getTitle();
         String[] lines = sb_template.getPreset();
         if (hasOraxen) {
@@ -52,22 +59,31 @@ public class PlayerList {
         }
         hplayer.setPreset(title, lines);
         hplayer.getScoreboard().create();
-        addPlayer(hplayer);
+        if (!exists(hplayer)) addPlayer(hplayer);
     }
-    public boolean addPlayer(Player player) {
-       if (!isToggled(player.getUniqueId().toString())) return false;
-       ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+    public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
+        if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
+        ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+        if (hasEvents) {
+            for (int i=0;i<templates.size();i++) {
+                if (templates.get(i).getEvents().length < 1) continue; //priority for event
+                if (!templates.get(i).isMatching(hplayer)) continue;
+                ScoreboardTemplate sb_template = templates.get(i);
+                initPlayer(sb_template, hplayer);
+                return true;
+            }
+        }
         for (int i=0;i<templates.size();i++) {
             if (templates.get(i).isDefault()) continue; //priority for nondefault
-            if (!templates.get(i).isMatching(player)) continue;
+            if (!templates.get(i).isMatching(hplayer)) continue;
             ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, player);
+            initPlayer(sb_template, hplayer);
             return true;
         }
         for (int i=0;i<templates.size();i++) {
             if (!templates.get(i).isDefault()) continue;
             ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, player);
+            initPlayer(sb_template, hplayer);
             return true;
         }
         return false;

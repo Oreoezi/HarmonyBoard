@@ -8,8 +8,6 @@ import me.oreoezi.harmonyboard.api.PlayerList;
 import me.oreoezi.harmonyboard.utils.HarmonyCommand;
 
 public class ReloadCommand extends HarmonyCommand {
-    public ReloadCommand() {
-    }
     @Override
     public boolean onExec(CommandSender player, String[] args) {
         PlayerList playerlist = HarmonyBoard.instance.getPlayerList();
