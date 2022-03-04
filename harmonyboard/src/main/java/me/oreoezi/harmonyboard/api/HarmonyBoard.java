@@ -9,8 +9,7 @@ import me.oreoezi.harmonyboard.ThreadMain;
 import me.oreoezi.harmonyboard.command.CommandManager;
 import me.oreoezi.harmonyboard.datamanagers.Configs;
 import me.oreoezi.harmonyboard.datamanagers.Database;
-import me.oreoezi.harmonyboard.events.implementations.EventScoreboards;
-import me.oreoezi.harmonyboard.events.implementations.Events;
+import me.oreoezi.harmonyboard.events.EventSystem;
 import me.oreoezi.harmonyboard.metrics.Tracking;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 
@@ -19,7 +18,7 @@ public class HarmonyBoard {
     private JavaPlugin main;
     private Configs configs;
     private Database database;
-    private Events events;
+    private EventSystem eventsystem;
     private ThreadMain threadmain;
     private CommandManager commandmanager;
     private PlayerList playerlist;
@@ -77,15 +76,9 @@ public class HarmonyBoard {
             HarmonyPlayer hplayer = new HarmonyPlayer(player);
             HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(hplayer);
         }   
-        events = new Events();
-        EventScoreboards eventsb = new EventScoreboards();
-        
-        main.getServer().getPluginManager().registerEvents(events, main);
-        if (hasEvents)
-            main.getServer().getPluginManager().registerEvents(eventsb, main);
+        eventsystem = new EventSystem(main, hasEvents);
         boolean hasPAPI = main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null; 
         boolean updateTitles = configs.getConfig().getBoolean("allow_placeholders_in_title");
-        
         int update_rate = configs.getConfig().getInt("scoreboard_update_rate");
         threadmain = new ThreadMain(hasPAPI, updateTitles, hasEvents, update_rate);
         threadmain.runTaskTimerAsynchronously(main, update_rate, update_rate);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.events.EventEnum;
 import me.oreoezi.harmonyboard.events.EventTimestamp;
 import me.oreoezi.harmonyboard.utils.packets.versions.*;
@@ -68,9 +69,15 @@ public class HarmonyPlayer {
         return scoreboard;
     }
     public void registerEvent(EventEnum event) {
+        if (!HarmonyBoard.instance.getConfigs().isEventEnabled(event)) return;
         EventTimestamp ets = new EventTimestamp(event);
-        unregisterEvent(event);
-        events.add(ets);
+        if (unregisterEvent(event) == null) {
+            getScoreboard().destroy();
+            create();
+            events.add(ets);
+            HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(this);
+        }
+        else events.add(ets);
     }
     public EventTimestamp unregisterEvent(EventEnum event) {
         for (int i=0;i<events.size();i++)
