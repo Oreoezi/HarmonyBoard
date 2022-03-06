@@ -2,12 +2,12 @@ package me.oreoezi.harmonyboard.utils;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.events.EventEnum;
 import me.oreoezi.harmonyboard.events.EventTimestamp;
+import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
 import me.oreoezi.harmonyboard.utils.packets.versions.*;
 
 public class HarmonyPlayer {
@@ -94,7 +94,7 @@ public class HarmonyPlayer {
         return events;
     }
     public void create() {
-        int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
+        int version = NMSUtils.versionId;
         if (version < 17) scoreboard = new ScoreboardLegacy(this);
         else if (version < 18) scoreboard = new ScoreboardUtopic(this);
         else scoreboard = new ScoreboardLmao(this);

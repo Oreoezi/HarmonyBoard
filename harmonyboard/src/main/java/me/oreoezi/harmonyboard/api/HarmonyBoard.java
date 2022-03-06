@@ -18,7 +18,6 @@ public class HarmonyBoard {
     private JavaPlugin main;
     private Configs configs;
     private Database database;
-    private EventSystem eventsystem;
     private ThreadMain threadmain;
     private CommandManager commandmanager;
     private PlayerList playerlist;
@@ -76,7 +75,7 @@ public class HarmonyBoard {
             HarmonyPlayer hplayer = new HarmonyPlayer(player);
             HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(hplayer);
         }   
-        eventsystem = new EventSystem(main, hasEvents);
+        EventSystem.init(main, hasEvents);
         boolean hasPAPI = main.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null; 
         boolean updateTitles = configs.getConfig().getBoolean("allow_placeholders_in_title");
         int update_rate = configs.getConfig().getInt("scoreboard_update_rate");

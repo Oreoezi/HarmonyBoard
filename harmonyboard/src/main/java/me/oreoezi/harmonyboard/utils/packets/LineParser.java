@@ -1,6 +1,6 @@
 package me.oreoezi.harmonyboard.utils.packets;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 
 public class LineParser {
 	public static String[] splitLine(String text) {
@@ -13,7 +13,12 @@ public class LineParser {
 			suffix += text.substring(text.length()/2, text.length());
 		}
 		else {
-			suffix += ChatColor.getLastColors(prefix);
+			String last_col = "";
+			for (int i=prefix.length()-1;i>=0;i--) {
+				if (prefix.charAt(i) != '§') continue;
+				last_col = prefix.charAt(i) + "" + prefix.charAt(i+1);
+			}
+			suffix += last_col;
 			suffix += text.substring(text.length()/2, text.length());
 		}
 		return new String[] {prefix, suffix};

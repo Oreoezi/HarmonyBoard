@@ -1,7 +1,7 @@
 title: "Your Server Network"
 lines:
  - "a%default%a"
- - "Hello &b%player%&f,"
+ - "Hello &b%name%&f,"
  - " "
  - "Online Players: %online%"
  - "  "

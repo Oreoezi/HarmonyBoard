@@ -1,6 +1,5 @@
 package me.oreoezi.harmonyboard.placeholders;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.oreoezi.harmonyboard.datamanagers.HarmonyPlaceholder;
@@ -10,8 +9,7 @@ import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
 public class Ping extends HarmonyPlaceholder {
 	private int getPing(Player player) {
 		try {
-			int version = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("v1_")[1].split("_")[0]);
-			if (version < 17) {
+			if (NMSUtils.versionId < 17) {
 				Object craftplayer = NMSUtils.getHandle.invoke(player);
 				return (int) craftplayer.getClass().getField("ping").get(craftplayer);
 			}

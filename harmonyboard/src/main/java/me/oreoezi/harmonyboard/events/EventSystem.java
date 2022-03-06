@@ -11,7 +11,7 @@ public class EventSystem {
     private static EventScoreboards eventScoreboards;
     private static EventMcMMO eventMcMMO;
     
-    public EventSystem(Plugin main, boolean hasEvents) {
+    public static void init(Plugin main, boolean hasEvents) {
         if (events != null) return;
         events = new Events(hasEvents);
         main.getServer().getPluginManager().registerEvents(events, main);

@@ -1,5 +1,4 @@
 package me.oreoezi.harmonyboard.events.implementations;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -9,7 +8,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.events.EventEnum;
 import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
-
 public class Events implements Listener {
     private boolean hasEvents;
     public Events(boolean hasEvents) {
@@ -19,6 +17,7 @@ public class Events implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         HarmonyPlayer hplayer = new HarmonyPlayer(event.getPlayer());
         if (hasEvents) {
+            hplayer.getScoreboard().create();
             if (event.getPlayer().hasPlayedBefore()) hplayer.registerEvent(EventEnum.JOINED);
             else hplayer.registerEvent(EventEnum.FIRST_JOINED);
         }

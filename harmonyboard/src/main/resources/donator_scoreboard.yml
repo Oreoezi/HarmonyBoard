@@ -1,7 +1,7 @@
 title: "Awesome Scoreboard"
 lines:
  - "a%default%a"
- - "Hello donator &c%player%&f,"
+ - "Hello donator &c%name%&f,"
  - " "
  - "Online Players: %online%"
  - "  "
