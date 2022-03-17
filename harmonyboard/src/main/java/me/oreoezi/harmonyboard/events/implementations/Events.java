@@ -38,6 +38,7 @@ public class Events implements Listener {
         }
         else {
             hplayer.getScoreboard().destroy();
+            hplayer.create();
             HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(hplayer);
         }
     }
