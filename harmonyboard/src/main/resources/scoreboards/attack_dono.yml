@@ -1,0 +1,14 @@
+title: "Your Server Network"
+lines:
+ - "a%default%a"
+ - "Donator &b%name%&f is attacking,"
+ - " "
+ - "Online Players: %online%"
+ - "  "
+ - "&byourserver.gg"
+ - "a%default%a"
+conditions:
+ permissions: 
+  - "donator.perm"
+ events:
+  - ATTACK

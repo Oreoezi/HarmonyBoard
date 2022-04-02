@@ -55,9 +55,9 @@ public class HarmonyBoard {
         }
         boolean hasEvents = configs.getConfig().getBoolean("event_based_scoreboards");
         playerlist = new PlayerList(main.getServer().getPluginManager().getPlugin("Oraxen") != null, 
-        configs.getConfig().getBoolean("save_scoreboard_preferences"), hasEvents);
+        configs.getConfig().getBoolean("save_scoreboard_preferences"));
         placeholderlist = new PlaceholderList();
-        commandmanager = new CommandManager(configs);
+        commandmanager = new CommandManager();
         if (configs.getConfig().getBoolean("save_scoreboard_preferences")) {
             //For now the database only saves scoreboard toggles
             if (configs.getConfig().getBoolean("mysql.enable")) {

@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "Du musst ein Spieler sein, um diesen Befehl auszuführen."
+  no_permission: "Du hast nicht die benötigten Berechtigungen, um diesen Befehl auszuführen."
+  invalid_command: "Der Befehl, den du versucht hast zu benutzen, existiert nicht."
+  invalid_arguments: "Bitte gib die richtigen Argumente für den Befehl an."
+  invalid_player: "Spieler existiert nicht oder ist nicht Online."
+  invalid_scoreboard: "Konnte kein Scoreboard unter diesem Namen finden."
+  toggle_disabled: "An-/Ausschalten von Scoreboards ist gerade deaktiviert."
+ admin:
+  reloaded: "Konfig erfolgreich neu geladen."
+  scoreboard_removed: "Scoreboard erfolgreich gelöscht."
+  scoreboard_set: "Scoreboard erfolgreich gesetzt."
+ player:
+  toggle_on: "Scoreboard erfolgreich eingeschaltet."
+  toggle_off: "Scoreboard erfolgreich ausgeschaltet."

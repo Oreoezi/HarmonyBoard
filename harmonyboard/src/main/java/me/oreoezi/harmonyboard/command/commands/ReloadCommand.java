@@ -15,7 +15,7 @@ public class ReloadCommand extends HarmonyCommand {
             playerlist.getPlayer(i).destroy();
         }
         HarmonyBoard.instance.init();
-        player.sendMessage(HarmonyBoard.instance.getConfigs().getMessage("admin.reloaded"));
+        HarmonyBoard.instance.getConfigs().sendMessage(player, "admin.reloaded");
         return true;
     }
     public String getName() {

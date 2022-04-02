@@ -1,9 +1,12 @@
 title: "Your Server Network"
 lines:
  - "a%default%a"
- - "Hello &b%name%&f,"
+ - "%name% is attacking,"
  - " "
  - "Online Players: %online%"
  - "  "
  - "&byourserver.gg"
  - "a%default%a"
+conditions:
+ events:
+  - ATTACK

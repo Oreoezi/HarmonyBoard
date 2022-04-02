@@ -1,7 +1,7 @@
 main: me.oreoezi.harmonyboard.App
 name: HarmonyScoreboard
 version: ${project.version}
-description: Spigot plugin for creating lightweight async scoreboards using NMS.
+description: Plugin for creating lightweight scoreboards using NMS.
 author: Oreoezi
 api-version: 1.13
 softdepend: [PlaceholderAPI, Oraxen, mcMMO]

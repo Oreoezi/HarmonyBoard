@@ -16,5 +16,11 @@ public class Tracking {
             }
             return "none";
         }));
+        metrics.addCustomChart(new Metrics.SimplePie("has_events", () -> {
+            FileConfiguration config = HarmonyBoard.instance.getConfigs().getConfig();
+            if (config.getBoolean("event_based_scoreboards")) 
+                return "Yes";
+            return "No";
+        }));
     }
 }

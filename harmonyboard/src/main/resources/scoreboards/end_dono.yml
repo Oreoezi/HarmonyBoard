@@ -1,0 +1,14 @@
+title: "Your Server Network"
+lines:
+ - "a%default%a"
+ - "End Scoreboard, donator &b%name%"
+ - " "
+ - "Online Players: %online%"
+ - "  "
+ - "&byourserver.gg"
+ - "a%default%a"
+conditions:
+ permissions: 
+  - "donator.perm"
+ worlds:
+  - world_the_end

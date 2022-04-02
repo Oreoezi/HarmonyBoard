@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "コンソールからは実行できません"
+  no_permission: "このコマンドを実行する権限がありません"
+  invalid_command: "このコマンドは存在しません"
+  invalid_arguments: "コマンドの使用方法が間違っています"
+  invalid_player: "プレーヤーが存在しないか、オンラインではありません"
+  invalid_scoreboard: "このスコアボードテンプレートは存在しません"
+  toggle_disabled: "現在、スコアボードの切り替えは有効になっていません"
+ admin:
+  reloaded: "設定ファイルがリロードされました"
+  scoreboard_removed: "スコアボードが正常に削除されました"
+  scoreboard_set: "スコアボードを正常に変更しました"
+ player:
+  toggle_on: "スコアボードを有効にしました"
+  toggle_off: "スコアボードを無効にしました"

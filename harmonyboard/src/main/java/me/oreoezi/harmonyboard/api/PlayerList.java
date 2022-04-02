@@ -12,11 +12,9 @@ public class PlayerList {
     private ArrayList<HarmonyPlayer> playerlist;
     private boolean hasOraxen;
     private boolean checkToggle;
-    private boolean hasEvents;
-    public PlayerList(boolean hasOraxen, boolean checkToggle, boolean hasEvents) {
+    public PlayerList(boolean hasOraxen, boolean checkToggle) {
         this.hasOraxen = hasOraxen;
         this.checkToggle = checkToggle;
-        this.hasEvents = hasEvents;
         playerlist = new ArrayList<HarmonyPlayer>();
     }
     public void addPlayer(HarmonyPlayer player) {
@@ -48,7 +46,7 @@ public class PlayerList {
     }
     private void initPlayer(ScoreboardTemplate sb_template, HarmonyPlayer hplayer) {
         String title = sb_template.getTitle();
-        String[] lines = sb_template.getPreset();
+        String[] lines = sb_template.getPreset();   
         if (hasOraxen) {
             Map<String, io.th0rgal.oraxen.font.Glyph> glyphs = io.th0rgal.oraxen.OraxenPlugin.get().getFontManager().getGlyphByPlaceholderMap();
             for (String key : glyphs.keySet()) {
@@ -63,29 +61,12 @@ public class PlayerList {
     }
     public boolean addPlayerWithScoreboard(HarmonyPlayer hplayer) {
         if (!isToggled(hplayer.getPlayer().getUniqueId().toString())) return false;
-        ArrayList<ScoreboardTemplate> templates = HarmonyBoard.instance.getConfigs().getScoreboards();
-        if (hasEvents) {
-            for (int i=0;i<templates.size();i++) {
-                if (templates.get(i).getEvents().length < 1) continue; //priority for event
-                if (!templates.get(i).isMatching(hplayer)) continue;
-                ScoreboardTemplate sb_template = templates.get(i);
-                initPlayer(sb_template, hplayer);
-                return true;
-            }
-        }
-        for (int i=0;i<templates.size();i++) {
-            if (templates.get(i).isDefault()) continue; //priority for nondefault
-            if (!templates.get(i).isMatching(hplayer)) continue;
-            ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, hplayer);
-            return true;
-        }
-        for (int i=0;i<templates.size();i++) {
-            if (!templates.get(i).isDefault()) continue;
-            ScoreboardTemplate sb_template = templates.get(i);
-            initPlayer(sb_template, hplayer);
-            return true;
-        }
+        ScoreboardTemplate[] templates = HarmonyBoard.instance.getConfigs().getScoreboards();
+        int i=0;
+        while (!templates[i].isMatching(hplayer) && i < templates.length) {
+            i++; 
+        }  
+        if (i < templates.length) initPlayer(templates[i], hplayer);
         return false;
     }
     public boolean isToggled(String uuid) {
