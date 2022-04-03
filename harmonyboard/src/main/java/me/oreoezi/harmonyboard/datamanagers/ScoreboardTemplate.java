@@ -58,11 +58,17 @@ public class ScoreboardTemplate {
         }
         return false; 
     }
+    /**
+     * Returns the number of conditions as a number from 0 to 3.
+     * Having specific worlds, permissions or events each increases the number by one.
+     * The number of worlds, permissions or events that the scoreboard has to match is irrelevant.
+     * @return number of conditions
+     */
     public int conditions() {
         int conds = 0;
         if (worlds.length > 0) conds++;
         if (permissions.length > 0) conds++;
-        if (events.length > 0) conds+= 10;
+        if (events.length > 0) conds++;
         return conds;
     }
     public EventEnum[] getEvents() {

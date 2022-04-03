@@ -68,11 +68,15 @@ public class Configs {
             }
             this.scoreboards[i] = template;
     	}
-        for (int i=0;i<this.scoreboards.length-1;i++) { //this looks horrible but I will fix later
-            if (this.scoreboards[i].conditions() >= this.scoreboards[i+1].conditions()) continue;
-            ScoreboardTemplate aux = this.scoreboards[i];
-            this.scoreboards[i] = this.scoreboards[i+1];
-            this.scoreboards[i+1] = aux;
+        for (int i=0;i<this.scoreboards.length-1;i++) { 
+            //this looks horrible but I will fix later
+            //that later never came
+            for (int j=i+1;j<this.scoreboards.length;j++) {
+                if (this.scoreboards[i].conditions() >= this.scoreboards[j].conditions()) continue;
+                ScoreboardTemplate aux = this.scoreboards[i];
+                this.scoreboards[i] = this.scoreboards[j];
+                this.scoreboards[j] = aux;
+            }
         }
         String[] animations = an_folder.list();
         for (int i=0;i<animations.length;i++) {
