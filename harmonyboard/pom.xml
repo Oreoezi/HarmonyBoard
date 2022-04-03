@@ -6,7 +6,7 @@
 
   <groupId>me.oreoezi.harmonyboard</groupId>
   <artifactId>harmonyboard</artifactId>
-  <version>2.5.6</version>
+  <version>2.6.0</version>
 
   <name>harmonyboard</name>
   <url>https://github.com/Oreoezi/HarmonyBoard</url>
@@ -95,12 +95,7 @@
         <directory>${project.basedir}/src/main/resources</directory>
          <filtering>true</filtering>
         <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-          <include>language.yml</include>
-          <include>example_animation.yml</include>
-          <include>example_scoreboard.yml</include>
-          <include>donator_scoreboard.yml</include>
+          <include>**/*</include>
         </includes>
       </resource>
     </resources>

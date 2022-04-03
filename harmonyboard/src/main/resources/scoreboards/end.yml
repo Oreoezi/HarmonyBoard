@@ -1,0 +1,12 @@
+title: "Your Server Network"
+lines:
+ - "a%default%a"
+ - "End Scoreboard, %name%"
+ - " "
+ - "Online Players: %online%"
+ - "  "
+ - "&byourserver.gg"
+ - "a%default%a"
+conditions:
+ worlds:
+  - world_the_end

@@ -8,9 +8,5 @@ lines:
  - "&byourserver.gg"
  - "a%default%a"
 conditions:
- worlds:
-  - world_nether
-  - world_the_end
- events:
-  - COMBAT
- permission: "donator.perm"
+ permissions: 
+  - "donator.perm"

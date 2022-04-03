@@ -4,43 +4,53 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.events.EventEnum;
 
-
 public class Configs {
     private FileConfiguration config;
-    private FileConfiguration text;
+    private HashMap<String, FileConfiguration> text;
     private FileConfiguration events;
-    private ArrayList<ScoreboardTemplate> scoreboards;
-	private ArrayList<HarmonyAnimation> animations;
+    private ScoreboardTemplate[] scoreboards;
+    private String default_lang;
+    private String prefix;
     public Configs(Plugin plugin) throws IOException {
-        scoreboards = new ArrayList<ScoreboardTemplate>();
-        animations = new ArrayList<HarmonyAnimation>();
         String folder = plugin.getDataFolder().getAbsolutePath();
+        text = new HashMap<String, FileConfiguration>();
         File sb_folder = new File(folder + "/Scoreboards");
     	File an_folder = new File(folder + "/Animations");
+        File lang_folder = new File(folder + "/Language");
         if (!sb_folder.exists()) {
-            sb_folder.mkdir();
-            createConfig(plugin, folder + "/Scoreboards/default", "example_scoreboard");
-            createConfig(plugin, folder + "/Scoreboards/donator", "donator_scoreboard");
+            String[] scoreboards = {"attack_dono", "attack", "default", "donator", "end_dono", "end"};
+            for (int i=0;i<scoreboards.length;i++)
+                createConfig(plugin, folder + "/Scoreboards/" + scoreboards[i], "scoreboards/" + scoreboards[i]);
         }
         if (!an_folder.exists()) {
             an_folder.mkdir();
             createConfig(plugin, folder + "/Animations/default", "example_animation");
         }
+        if (!lang_folder.exists()) {
+            lang_folder.mkdir();
+            String[] locales = {"en_us", "ja_jp", "ro_ro", "de_de"};
+            for (int i=0;i<locales.length;i++)
+                createConfig(plugin, folder + "/Language/" + locales[i], "language/" + locales[i]);
+        }
         config = createConfig(plugin, folder + "/config", "config");
-        text = createConfig(plugin, folder + "/language", "language");
+        FileConfiguration lg_file = createConfig(plugin, folder + "/language", "language");
+        prefix = lg_file.getString("prefix");
+        default_lang = lg_file.getString("default");
         events = createEventsConfig(plugin, folder + "/events");
         String[] scoreboards = sb_folder.list();
+        this.scoreboards = new ScoreboardTemplate[scoreboards.length];
     	for (int i=0;i<scoreboards.length;i++) {
             FileConfiguration scoreboard = loadConfig(folder + "/Scoreboards/" + scoreboards[i]);
             String title = scoreboard.getString("title");
@@ -56,8 +66,18 @@ public class Configs {
                     }
                     template.setEvents(events);
             }
-            this.scoreboards.add(template);
+            this.scoreboards[i] = template;
     	}
+        for (int i=0;i<this.scoreboards.length-1;i++) { 
+            //this looks horrible but I will fix later
+            //that later never came
+            for (int j=i+1;j<this.scoreboards.length;j++) {
+                if (this.scoreboards[i].conditions() >= this.scoreboards[j].conditions()) continue;
+                ScoreboardTemplate aux = this.scoreboards[i];
+                this.scoreboards[i] = this.scoreboards[j];
+                this.scoreboards[j] = aux;
+            }
+        }
         String[] animations = an_folder.list();
         for (int i=0;i<animations.length;i++) {
             FileConfiguration animation = loadConfig(folder + "/Animations/" + animations[i]);
@@ -65,17 +85,19 @@ public class Configs {
             animation.getInt("delay"), animation.getList("lines").toArray(new String[0]));
             HarmonyBoard.instance.getAnimationList().addAnimation(anim);
     	}
+        String[] languages = lang_folder.list();
+        for (int i=0;i<languages.length;i++) {
+            FileConfiguration lang = loadConfig(folder + "/Language/" + languages[i]);
+            text.put(languages[i], lang);
+        }
     }
-    public ArrayList<ScoreboardTemplate> getScoreboards() {
+    public ScoreboardTemplate[] getScoreboards() {
         return scoreboards;
     }
     public ScoreboardTemplate getScoreboardTemplate(String name) {
-        for (int i=0;i<scoreboards.size();i++) 
-            if (scoreboards.get(i).getName().equals(name)) return scoreboards.get(i);
+        for (int i=0;i<scoreboards.length;i++) 
+            if (scoreboards[i].getName().equals(name)) return scoreboards[i];
         return null;
-    }
-    public ArrayList<HarmonyAnimation> getAnimations() {
-        return animations;
     }
     private FileConfiguration createConfig(Plugin plugin, String path, String config_name) throws IOException {
         File config_file = new File(path + ".yml");
@@ -106,15 +128,16 @@ public class Configs {
     public FileConfiguration getConfig() {
         return config;
     }
-	public String getMessage(String index) {
-		if (text.getString("messages." + index) != null)
-		    return ChatColor.translateAlternateColorCodes('&', text.getString("prefix") + " " + text.getString("messages." + index));
-        return "";
-	}
-	public String getMessageNoPrefix(String index) {
-		if (text.getString("messages." + index) != null)
-			return ChatColor.translateAlternateColorCodes('&', text.getString("messages." + index));
-		return "";
+	public boolean sendMessage(CommandSender sender, String index) {
+        if (sender instanceof Player)
+		{
+            Player player = (Player) sender;
+            String message = text.getOrDefault(player.getLocale() + ".yml", text.get(default_lang + ".yml")).getString("messages." + index);
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message));
+            return true;
+        }
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + text.get(default_lang).getString(index)));
+        return true;
 	}
     public boolean isEventEnabled(EventEnum event) {
         return events.getBoolean(event.toString() + ".enabled");

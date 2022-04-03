@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "You must be a player to run this command."
+  no_permission: "You do not have the required permission to perform this command."
+  invalid_command: "The command you were trying to perform does not exist."
+  invalid_arguments: "Please provide the right arguments for the command."
+  invalid_player: "Player does not exist or is not online."
+  invalid_scoreboard: "Could not find the scoreboard template with this name."
+  toggle_disabled: "Toggling scoreboards is not currently enabled."
+ admin:
+  reloaded: "Config successfully reloaded."
+  scoreboard_removed: "Scoreboard successfully removed."
+  scoreboard_set: "Successfully set scoreboard."
+ player:
+  toggle_on: "Toggled scoreboard on successfully."
+  toggle_off: "Toggled scoreboard off successfully."

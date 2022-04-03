@@ -52,13 +52,24 @@ public class ScoreboardTemplate {
         return false;
     }
     private boolean hasEvent(HarmonyPlayer hplayer) {
+        if (events.length < 1) return true;
         for (int i=0;i<events.length;i++) {
             if (hplayer.getEvent(events[i]) != null) return true;
         }
         return false; 
     }
-    public boolean isDefault() {
-        return worlds.length < 1 && permissions.length < 1 && events.length < 1;
+    /**
+     * Returns the number of conditions as a number from 0 to 3.
+     * Having specific worlds, permissions or events each increases the number by one.
+     * The number of worlds, permissions or events that the scoreboard has to match is irrelevant.
+     * @return number of conditions
+     */
+    public int conditions() {
+        int conds = 0;
+        if (worlds.length > 0) conds++;
+        if (permissions.length > 0) conds++;
+        if (events.length > 0) conds++;
+        return conds;
     }
     public EventEnum[] getEvents() {
         return events;

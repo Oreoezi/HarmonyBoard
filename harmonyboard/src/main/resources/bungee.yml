@@ -1,0 +1,5 @@
+name: HarmonyScoreboard
+author: Oreoezi
+version: ${project.version}
+description: Plugin for creating lightweight scoreboards using NMS.
+main: me.oreoezi.harmonyboard.Bungee

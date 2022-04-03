@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "Trebuie să fii un jucător ca să execuți această comandă."
+  no_permission: "Nu ai permisiunea sa execuți această comandă."
+  invalid_command: "Comanda pe care încercai să o execuți nu există."
+  invalid_arguments: "Scrie parametrii corespunzători comenzii pe care dorești să o execuți."
+  invalid_player: "Jucătorul nu există sau nu este online."
+  invalid_scoreboard: "Nu există tabelă cu numele acesta."
+  toggle_disabled: "Comutarea tabelelor nu este permisă."
+ admin:
+  reloaded: "Configurația a fost reîncărcată cu succes."
+  scoreboard_removed: "Tabela de scor a fost scoasă cu succes."
+  scoreboard_set: "Tabela de scor a fost schimbată cu succes."
+ player:
+  toggle_on: "Tabela a fost comutată cu succes."
+  toggle_off: "Tabela a fost dezactivată cu succes."

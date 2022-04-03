@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import me.oreoezi.harmonyboard.api.HarmonyBoard;
 import me.oreoezi.harmonyboard.command.commands.ReloadCommand;
 import me.oreoezi.harmonyboard.command.commands.ScoreboardCommand;
 import me.oreoezi.harmonyboard.command.commands.ToggleCommand;
@@ -17,9 +18,7 @@ import me.oreoezi.harmonyboard.utils.HarmonyCommand;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
     private ArrayList<HarmonyCommand> commands;
-    private Configs configs;
-    public CommandManager(Configs configs) {
-        this.configs = configs;
+    public CommandManager() {
         commands = new ArrayList<HarmonyCommand>();
         commands.add(new ReloadCommand());
         commands.add(new ScoreboardCommand());
@@ -27,6 +26,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Configs configs = HarmonyBoard.instance.getConfigs();
         if (args.length < 1 || args[0] == "help") {
             commands.forEach(cmd -> {
                 sender.sendMessage("§b/hboard " + cmd.getName() + " " + cmd.getArgs() + " | " + cmd.getDescription());
@@ -37,10 +37,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if (!commands.get(i).getName().equals(args[0].toLowerCase())) continue;
                 if (sender.hasPermission(commands.get(i).getPermission()))
                     commands.get(i).onExec(sender, args);
-                else sender.sendMessage(configs.getMessage("error.no_permission"));
+                else configs.sendMessage(sender, "error.no_permission");
                 return true;
             }
-            sender.sendMessage(configs.getMessage("error.invalid_command"));
+            configs.sendMessage(sender, "error.invalid_command");
         }
         return true;
     }
