@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "你必須是玩家才能執行此指令."
+  no_permission: "你沒有執行此指令所需的權限."
+  invalid_command: "你正在嘗試執行的指令並不存在."
+  invalid_arguments: "請提供正確的指令參數."
+  invalid_player: "玩家並未存在或是不在線上."
+  invalid_scoreboard: "找不到有此名稱的記分板模板."
+  toggle_disabled: "目前未啟用開關記分板功能."
+ admin:
+  reloaded: "設定已成功重新加載."
+  scoreboard_removed: "記分板已成功移除."
+  scoreboard_set: "成功設置記分板."
+ player:
+  toggle_on: "已成功開啟記分板."
+  toggle_off: "已成功關閉記分板."
