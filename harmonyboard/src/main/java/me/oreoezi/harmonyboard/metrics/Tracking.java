@@ -7,8 +7,8 @@ import me.oreoezi.harmonyboard.api.HarmonyBoard;
 public class Tracking {
     public static void init(JavaPlugin plugin) {
         Metrics metrics = new Metrics(plugin, 11249);
+        FileConfiguration config = HarmonyBoard.instance.getConfigs().getConfig();
         metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> {
-            FileConfiguration config = HarmonyBoard.instance.getConfigs().getConfig();
             if (config.getBoolean("save_scoreboard_preferences")) {
                 if (config.getBoolean("mysql.enable"))
                     return "mysql";
@@ -17,7 +17,6 @@ public class Tracking {
             return "none";
         }));
         metrics.addCustomChart(new Metrics.SimplePie("has_events", () -> {
-            FileConfiguration config = HarmonyBoard.instance.getConfigs().getConfig();
             if (config.getBoolean("event_based_scoreboards")) 
                 return "Yes";
             return "No";

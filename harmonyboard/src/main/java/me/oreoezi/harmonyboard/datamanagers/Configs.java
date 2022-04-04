@@ -40,7 +40,7 @@ public class Configs {
         }
         if (!lang_folder.exists()) {
             lang_folder.mkdir();
-            String[] locales = {"en_us", "ja_jp", "ro_ro", "de_de"};
+            String[] locales = {"en_us", "ja_jp", "ro_ro", "de_de", "zh_tw"};
             for (int i=0;i<locales.length;i++)
                 createConfig(plugin, folder + "/Language/" + locales[i], "language/" + locales[i]);
         }

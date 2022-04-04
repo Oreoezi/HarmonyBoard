@@ -49,7 +49,10 @@ public class ScoreboardLegacy extends HarmonyScoreboard {
     @Override
     public void setTitleRaw(String title) {
         try {
-            objective.setDisplayName(title);
+            if (NMSUtils.versionId < 13) 
+                objective.setDisplayName(title);
+            else
+                objective.setDisplayName(new ChatMessage(title));
             connection.sendPacket(new S3BPacketScoreboardObjective(objective, 2));
         } catch (Exception e) {
             e.printStackTrace();
