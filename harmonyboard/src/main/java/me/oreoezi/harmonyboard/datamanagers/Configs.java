@@ -136,7 +136,7 @@ public class Configs {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message));
             return true;
         }
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + text.get(default_lang).getString(index)));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + text.get(default_lang + ".yml").getString("messages." + index)));
         return true;
 	}
     public boolean isEventEnabled(EventEnum event) {

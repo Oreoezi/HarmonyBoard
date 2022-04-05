@@ -25,10 +25,10 @@ public class HarmonyBoard {
     private AnimationList animationlist;
 
     public HarmonyBoard(JavaPlugin main) {
-        Tracking.init(main);
         instance = this;
         this.main = main;
         init();
+        Tracking.init(main);
     }
     public Configs getConfigs() {
         return configs;
