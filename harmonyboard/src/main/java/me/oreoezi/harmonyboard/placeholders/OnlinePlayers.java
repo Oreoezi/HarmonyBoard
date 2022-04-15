@@ -14,5 +14,4 @@ public class OnlinePlayers extends HarmonyPlaceholder{
 	public String getValue(HarmonyPlayer player) {
 		return String.valueOf(Bukkit.getOnlinePlayers().size());
 	}
-
 }

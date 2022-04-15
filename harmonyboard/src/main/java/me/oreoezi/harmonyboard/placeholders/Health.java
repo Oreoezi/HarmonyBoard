@@ -13,5 +13,4 @@ public class Health extends HarmonyPlaceholder{
 	public String getValue(HarmonyPlayer player) {
 		return String.valueOf(player.getPlayer().getHealth());
 	}
-
 }

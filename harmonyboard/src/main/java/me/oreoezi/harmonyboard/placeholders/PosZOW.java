@@ -17,5 +17,4 @@ public class PosZOW extends HarmonyPlaceholder{
 		}
 		return String.valueOf(Math.floor(player.getPlayer().getLocation().getZ()*10)/10);
 	}
-
 }

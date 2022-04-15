@@ -1,6 +1,7 @@
 package me.oreoezi.harmonyboard;
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 import me.oreoezi.harmonyboard.api.AnimationList;
 import me.oreoezi.harmonyboard.api.HarmonyBoard;
@@ -45,7 +46,7 @@ public class ThreadMain extends BukkitRunnable {
                     shouldChange = true;
                 }
             }
-            if (updateTitle) player.getScoreboard().setTitle(parseLine(player.getTitle(), player));
+            if (updateTitle) player.getScoreboard().setTitle(ChatColor.translateAlternateColorCodes('&', parseLine(player.getTitle(), player)));
             for (int j=0;j<player.getPreset().length;j++) {
                 player.getScoreboard().setLine(player.getPreset().length-j, parseLine(player.getPreset()[j], player));
             }

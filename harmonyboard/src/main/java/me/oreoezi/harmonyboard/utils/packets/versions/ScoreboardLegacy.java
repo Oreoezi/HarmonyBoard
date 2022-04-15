@@ -61,7 +61,10 @@ public class ScoreboardLegacy extends HarmonyScoreboard {
     @Override
     public void setLineRaw(int pos, String text, boolean create) {
         try {
-            String txt = "§r".repeat(pos+1);
+            String txt = "§r";
+            for (int i=0;i<pos;i++) {
+                txt += "§r";
+            }
             ScoreboardTeam team = new ScoreboardTeam(scoreboard, "line" + pos);
             String[] line_parts = LineParser.splitLine(text);
             S3CPacketUpdateScore s3cpacket;
