@@ -1,5 +1,6 @@
 package me.oreoezi.harmonyboard.events;
 
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import me.oreoezi.harmonyboard.events.implementations.EventMcMMO;
@@ -22,5 +23,9 @@ public class EventSystem {
             eventMcMMO = new EventMcMMO();
             main.getServer().getPluginManager().registerEvents(eventMcMMO, main);
         }
+    }
+    public static void destroy(Plugin main) {
+        HandlerList.unregisterAll(main);
+        events = null;
     }
 }

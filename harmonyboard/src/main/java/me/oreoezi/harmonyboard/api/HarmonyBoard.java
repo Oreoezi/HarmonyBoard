@@ -46,6 +46,7 @@ public class HarmonyBoard {
         return animationlist;
     }
     public void init() {
+        EventSystem.destroy(main);
         if (threadmain != null) threadmain.cancel();
         animationlist = new AnimationList();
         try {

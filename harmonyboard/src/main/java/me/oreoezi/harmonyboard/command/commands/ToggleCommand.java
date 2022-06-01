@@ -24,7 +24,7 @@ public class ToggleCommand extends HarmonyCommand {
         HarmonyPlayer target = HarmonyBoard.instance.getPlayerList().getPlayer(player);
         if (target == null) {
             HarmonyBoard.instance.getDatabaseInstance().runQuery("DELETE FROM toggle_off WHERE uuid='" + player.getUniqueId().toString() + "'");
-            HarmonyBoard.instance.getPlayerList().addPlayer(HarmonyBoard.instance.getPlayerList().getPlayer(player));
+            HarmonyBoard.instance.getPlayerList().addPlayerWithScoreboard(new HarmonyPlayer(player));
             configs.sendMessage(sender, "player.toggle_on");
             return true;
         }
