@@ -5,7 +5,7 @@ import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
 import me.oreoezi.harmonyboard.utils.packets.LineParser;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.network.chat.ChatMessage;
+import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective;
 import net.minecraft.network.protocol.game.PacketPlayOutScoreboardScore;
@@ -35,8 +35,8 @@ public class ScoreboardLmao extends HarmonyScoreboard {
             Object craftplayer = player.getClass().getMethod("getHandle").invoke(player);
             connection = (PlayerConnection) craftplayer.getClass().getField("b").get(craftplayer);
             scoreboard = new Scoreboard();
-            sb_obj = scoreboard.a(player.getName(), IScoreboardCriteria.a,new ChatMessage(player.getName()), IScoreboardCriteria.EnumScoreboardHealthDisplay.a);
-            sb_obj.a(new ChatMessage(ChatColor.translateAlternateColorCodes('&',hplayer.getTitle())));
+            sb_obj = scoreboard.a(player.getName(), IScoreboardCriteria.a, IChatBaseComponent.a(player.getName()), IScoreboardCriteria.EnumScoreboardHealthDisplay.a);
+            sb_obj.a(IChatBaseComponent.a(ChatColor.translateAlternateColorCodes('&',hplayer.getTitle())));
             connection.a(new PacketPlayOutScoreboardObjective(sb_obj, 0));
             connection.a(new PacketPlayOutScoreboardDisplayObjective(1, sb_obj));
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class ScoreboardLmao extends HarmonyScoreboard {
     }
     @Override 
 	public void setTitleRaw(String title) {
-	    sb_obj.a(new ChatMessage(ChatColor.translateAlternateColorCodes('&',title)));
+	    sb_obj.a(IChatBaseComponent.a(ChatColor.translateAlternateColorCodes('&',title)));
 		connection.a(new PacketPlayOutScoreboardObjective(sb_obj, 2));
 	}
     @Override
@@ -56,11 +56,11 @@ public class ScoreboardLmao extends HarmonyScoreboard {
                 txt += "§r";
             }
             ScoreboardTeam team = new ScoreboardTeam(scoreboard, "line"+pos);
-            team.a(new ChatMessage("line"+pos));
+            team.a(IChatBaseComponent.a("line"+pos));
             String pref = LineParser.splitLine(text)[0];
             String suf = LineParser.splitLine(text)[1];
-            team.b(new ChatMessage(pref));
-            team.c(new ChatMessage(suf));
+            team.b(IChatBaseComponent.a(pref));
+            team.c(IChatBaseComponent.a(suf));
             team.g().add(txt);
             ScoreboardScore sbs = new ScoreboardScore(scoreboard, sb_obj, txt);
             sbs.a(pos);
