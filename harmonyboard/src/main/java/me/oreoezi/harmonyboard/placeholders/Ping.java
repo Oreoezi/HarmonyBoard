@@ -10,7 +10,7 @@ public class Ping extends HarmonyPlaceholder {
 	private int getPing(Player player) {
 		try {
 			if (NMSUtils.versionId < 17) {
-				Object craftplayer = NMSUtils.getHandle.invoke(player);
+				Object craftplayer = player.getClass().getMethod("getHandle").invoke(player);
 				return (int) craftplayer.getClass().getField("ping").get(craftplayer);
 			}
 			return player.getPing();

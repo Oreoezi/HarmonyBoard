@@ -1,17 +1,18 @@
 package me.oreoezi.harmonyboard.utils.packets.implementations;
 
 import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils.NMSPacket;
+import me.oreoezi.harmonyboard.utils.packets.NMSUtils.ClassType;
 
-public class S3BPacketScoreboardObjective extends NMSPacket {
-    private Object packet;
+public class S3BPacketScoreboardObjective extends Packet {
+    private Object packetObject;
+    private static Class<?> S3B = NMSUtils.getNMSClass("PacketPlayOutScoreboardObjective", ClassType.Packet);
     @Override
-    public Object getRaw() {
-        return packet;
+    public Object getPacketObject() {
+        return packetObject;
     }
     public S3BPacketScoreboardObjective(ScoreboardObjective objective, int state) {
         try {
-            packet = NMSUtils.S3B.getDeclaredConstructor(objective.getRaw().getClass(), int.class).newInstance(objective.getRaw(), state);
+            packetObject = S3B.getDeclaredConstructor(ScoreboardObjective.scoreboardObjectiveClass, int.class).newInstance(objective.getRaw(), state);
         } catch (Exception e) {
             e.printStackTrace();
         }

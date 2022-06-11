@@ -1,24 +1,23 @@
 package me.oreoezi.harmonyboard.utils.packets.implementations;
 
 import org.bukkit.entity.Player;
-
 import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils.NMSPacket;
 
 public class PlayerConnection {
-    private Object connection;
+    private Object playerConnection;
     public PlayerConnection(Player player) {
         try {
-            Object craftplayer = NMSUtils.getHandle.invoke(player);
-            if (NMSUtils.versionId < 17) connection = craftplayer.getClass().getField("playerConnection").get(craftplayer);
+            Object craftplayer = player.getClass().getMethod("getHandle").invoke(player);
+            if (NMSUtils.versionId < 17) playerConnection = craftplayer.getClass().getField("playerConnection").get(craftplayer);
+            else playerConnection = craftplayer.getClass().getField("b").get(craftplayer);
         } catch(Exception e) {
             e.printStackTrace();
         } 
     }
-    public void sendPacket(NMSPacket... packets) {
+    public void sendPacket(Packet... packets) {
         try {
-            for (NMSPacket packet : packets) 
-                connection.getClass().getMethod("sendPacket", NMSUtils.Packet).invoke(connection, packet.getRaw());
+            for (Packet packet : packets) 
+                playerConnection.getClass().getMethod("sendPacket", Packet.packetClass).invoke(playerConnection, packet.getPacketObject());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,10 +1,11 @@
 package me.oreoezi.harmonyboard.utils.packets.implementations;
 
 import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils.IChatBaseComponent;
+import me.oreoezi.harmonyboard.utils.packets.NMSUtils.ClassType;
 
 public class ScoreboardObjective {
     private Object objective;
+    public static Class<?> scoreboardObjectiveClass = NMSUtils.getNMSClass("ScoreboardObjective", ClassType.Scoreboard);
     public Object getRaw() {
         return objective;
     }
@@ -15,9 +16,9 @@ public class ScoreboardObjective {
             e.printStackTrace();
         }
     }
-    public void setDisplayName(IChatBaseComponent name) {
+    public void setDisplayName(ChatBaseComponent name) {
         try {
-            objective.getClass().getMethod("setDisplayName", NMSUtils.NMSIChatBaseComponent).invoke(objective, name.getRaw());
+            objective.getClass().getMethod("setDisplayName", IChatBaseComponent.chatBaseComponentInterface).invoke(objective, name.getRaw());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,8 +4,8 @@ import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
 import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
 import me.oreoezi.harmonyboard.utils.packets.LineParser;
 import me.oreoezi.harmonyboard.utils.packets.NMSUtils;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils.ChatMessage;
-import me.oreoezi.harmonyboard.utils.packets.NMSUtils.ScoreboardServer.Action;
+import me.oreoezi.harmonyboard.utils.packets.implementations.ChatMessage;
+import me.oreoezi.harmonyboard.utils.packets.implementations.IScoreboardCriteria;
 import me.oreoezi.harmonyboard.utils.packets.implementations.PlayerConnection;
 import me.oreoezi.harmonyboard.utils.packets.implementations.S3BPacketScoreboardObjective;
 import me.oreoezi.harmonyboard.utils.packets.implementations.S3CPacketUpdateScore;
@@ -15,6 +15,8 @@ import me.oreoezi.harmonyboard.utils.packets.implementations.Scoreboard;
 import me.oreoezi.harmonyboard.utils.packets.implementations.ScoreboardObjective;
 import me.oreoezi.harmonyboard.utils.packets.implementations.ScoreboardScore;
 import me.oreoezi.harmonyboard.utils.packets.implementations.ScoreboardTeam;
+import me.oreoezi.harmonyboard.utils.packets.implementations.IScoreboardCriteria.EnumScoreboardHealthDisplay;
+import me.oreoezi.harmonyboard.utils.packets.implementations.ScoreboardServer.Action;
 public class ScoreboardLegacy extends HarmonyScoreboard {
     private HarmonyPlayer hplayer;
     private PlayerConnection connection;
@@ -30,14 +32,14 @@ public class ScoreboardLegacy extends HarmonyScoreboard {
             connection = new PlayerConnection(hplayer.getPlayer());
             scoreboard = new Scoreboard();
             if (NMSUtils.versionId < 13) {
-                Object criteria = NMSUtils.IScoreboardCriteria.b();
+                Object criteria = IScoreboardCriteria.b();
                 objective = scoreboard.registerObjective(hplayer.getPlayer().getName(), criteria);
                 objective.setDisplayName(hplayer.getTitle());
             }
             else {
-                Object criteria = NMSUtils.IScoreboardCriteria.DUMMY();
+                Object criteria = NMSUtils.versionId < 17 ? IScoreboardCriteria.DUMMY() : IScoreboardCriteria.a();
                 ChatMessage name = new ChatMessage(hplayer.getPlayer().getName());
-                Object display = NMSUtils.EnumScoreboardHealthDisplay.getEnumConstants()[0];
+                Object display = EnumScoreboardHealthDisplay.integer();
                 objective = scoreboard.registerObjective(hplayer.getPlayer().getName(), criteria, name, display);
                 objective.setDisplayName(new ChatMessage(hplayer.getTitle()));
             }
