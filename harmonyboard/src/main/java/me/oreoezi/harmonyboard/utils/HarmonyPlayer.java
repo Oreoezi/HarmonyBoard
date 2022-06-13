@@ -96,7 +96,6 @@ public class HarmonyPlayer {
     public void create() {
         int version = NMSUtils.versionId;
         if (version < 18) scoreboard = new ScoreboardLegacy(this);
-        //else if (version < 18) scoreboard = new ScoreboardUtopic(this);
         else scoreboard = new ScoreboardLmao(this);
     }
 }
