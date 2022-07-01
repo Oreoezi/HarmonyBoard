@@ -1,10 +1,9 @@
 package me.oreoezi.harmonyboard.utils.packets.versions;
 
-import me.oreoezi.harmonyboard.utils.HarmonyPlayer;
-import me.oreoezi.harmonyboard.utils.HarmonyScoreboard;
+import me.oreoezi.harmonyboard.bungee.utils.HarmonyProxyPlayer;
 
-public class ScoreboardBungee extends HarmonyScoreboard {
-    public ScoreboardBungee(HarmonyPlayer player) {
-        super(player);
+public class ScoreboardBungee {
+    public ScoreboardBungee(HarmonyProxyPlayer player) {
+        
     }
 }
