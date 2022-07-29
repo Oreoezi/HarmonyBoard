@@ -19,7 +19,7 @@ public class NMSUtils {
     public static Class<?> NMSScoreboardObjective = versionId < 17 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".ScoreboardObjective") : null;
     public static Class<?> NMSScoreboardScore = versionId < 17 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".ScoreboardScore") : null;
     public static Class<?> NMSIScoreboardCriteria = versionId < 17 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".IScoreboardCriteria") : null;
-    public static Constructor<?> ChatMessage = versionId < 17 ? ReflectionUtils.getConstructor("net.minecraft.server." + version + ".ChatMessage", String.class) : null;
+    public static Constructor<?> ChatMessage = versionId < 17 && versionId > 12 ? ReflectionUtils.getConstructor("net.minecraft.server." + version + ".ChatMessage", String.class) : null;
     public static Method getHandle = ReflectionUtils.getMethod("org.bukkit.craftbukkit." + version + ".entity.CraftPlayer", "getHandle");
     public static Class<?> Action = versionId > 12 && versionId < 17 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".ScoreboardServer$Action") : null;
     public static Class<?> EnumScoreboardHealthDisplay = versionId > 12 && versionId < 17 ? ReflectionUtils.getClass("net.minecraft.server." + version + ".IScoreboardCriteria$EnumScoreboardHealthDisplay") : null;

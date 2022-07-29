@@ -53,11 +53,11 @@ public class ThreadMain extends BukkitRunnable {
         }
     }
     private String parseLine(String line, HarmonyPlayer player) {
-        if (hasPAPI) line = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player.getPlayer(), line);
         for (int i=0;i<anims.size();i++) {
             if(!line.contains("a%" + anims.get(i).getName() + "%a")) continue;
             line = line.replaceAll("a%" + anims.get(i).getName() + "%a", anims.get(i).getCurrentFrame());
         }
+        if (hasPAPI) line = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player.getPlayer(), line);
         PlaceholderList list = HarmonyBoard.instance.getPlaceholderList();
         for (int i=0;i<list.size();i++) {
             if (!line.contains("%"+ list.getPlaceholder(i).getName()+"%")) continue;
