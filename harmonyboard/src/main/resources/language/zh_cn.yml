@@ -1,0 +1,16 @@
+messages:
+ error:
+  nonplayer: "你必须是玩家才能执行此命令."
+  no_permission: "你没有执行此命令的权限."
+  invalid_command: "此指令不存在."
+  invalid_arguments: "请提供正确的指令参数."
+  invalid_player: "玩家不存在或不在线."
+  invalid_scoreboard: "找不到含有此名称的计分板模版."
+  toggle_disabled: "当前计分板未启用."
+ admin:
+  reloaded: "配置文件已重新加载."
+  scoreboard_removed: "计分板已移除."
+  scoreboard_set: "成功设置计分板."
+ player:
+  toggle_on: "已成功开启计分板."
+  toggle_off: "已成功关闭计分板."
